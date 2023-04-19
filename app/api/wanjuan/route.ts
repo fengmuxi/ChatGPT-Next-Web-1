@@ -4,7 +4,7 @@ export async function POST(req: Request) {
 
     console.log(JSON.stringify(body));
     let res = "";
-    await fetch("http://47.94.237.159:8998/v1/wanjuan", {
+    await fetch("http://47.94.237.159:8080/v1/wanjuan", {
       method: "POST",
       body: JSON.stringify(body),
     })
