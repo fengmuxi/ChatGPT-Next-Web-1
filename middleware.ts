@@ -3,7 +3,7 @@ import { ACCESS_CODES } from "./app/api/access";
 import md5 from "spark-md5";
 
 export const config = {
-  matcher: ["/api/chat", "/api/chat-stream","/api/chat-image"],
+  matcher: ["/api/chat", "/api/chat-stream","/api/chat-image","/api/newbing","/api/wanjuan"],
 };
 
 export function middleware(req: NextRequest, res: NextResponse) {

@@ -24,7 +24,7 @@ import {
 import { Avatar, PromptHints } from "./home";
 
 import Locale, { AllLangs, changeLang, getLang } from "../locales";
-import { getCurrentCommitId } from "../utils";
+import { getCurrentCommitId, getEmojiUrl } from "../utils";
 import Link from "next/link";
 import { UPDATE_URL } from "../constant";
 import { SearchService, usePromptStore } from "../store/prompt";
@@ -132,6 +132,7 @@ export function Settings(props: { closeSettings: () => void }) {
                 <EmojiPicker
                   lazyLoadEmojis
                   theme={EmojiTheme.AUTO}
+                  getEmojiUrl={getEmojiUrl}
                   onEmojiClick={(e) => {
                     updateConfig((config) => (config.avatar = e.unified));
                     setShowEmojiPicker(false);
@@ -388,6 +389,7 @@ export function Settings(props: { closeSettings: () => void }) {
                     (config.modelConfig.model = e.currentTarget.value),
                 );
               }}
+              disabled={config.model != "聊天"}
             >
               {ALL_MODELS.map((v) => (
                 <option value={v.name} key={v.name} disabled={!v.available}>

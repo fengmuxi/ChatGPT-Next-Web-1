@@ -13,7 +13,7 @@ import {
 } from "./store";
 import Locale from "./locales";
 import { CreateImageRequestSizeEnum } from "openai";
-const TIME_OUT_MS = 180000;
+const TIME_OUT_MS = 120000;
 
 const makeRequestParam = (
   messages: Message[],
@@ -156,7 +156,7 @@ export async function requestChatStream(
       console.error("NetWork Error", err);
       options?.onError(err as Error);
     }
-  } else {
+  } else if (model == "AI绘画") {
     console.log("[Request] ", messages[messages.length - 1].content);
     const req = makeImageRequestParam(messages);
     const controller = new AbortController();
@@ -181,7 +181,59 @@ export async function requestChatStream(
       controller.abort();
     } catch (err) {
       console.error("NetWork Error", err);
-      options?.onError(err as Error);
+      options?.onMessage("请换一个问题试试吧", true);
+    }
+  } else if (model == "必应") {
+    console.log("[Request] ", messages[messages.length - 1].content);
+    const controller = new AbortController();
+    const reqTimeoutId = setTimeout(() => controller.abort(), TIME_OUT_MS);
+    try {
+      const res = await fetch("/api/newbing", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...getHeaders(),
+        },
+        body: JSON.stringify(messages[messages.length - 1].content),
+      });
+
+      clearTimeout(reqTimeoutId);
+
+      let message = await res.text();
+      // let responseText = "";
+      // for (let i = 1; i <= message.length; i++) {
+      //   // handle time out, will stop if no response in 10 secs
+      //   let messages = message.slice(0,i);
+      //   console.log(message)
+      //   responseText = messages;
+      //   options?.onMessage(responseText, false);
+      // }
+      options?.onMessage(message, true);
+      controller.abort();
+    } catch (err) {
+      console.error("NetWork Error", err);
+      options?.onMessage("请换一个问题试试吧", true);
+    }
+  } else {
+    console.log("[Request] ", messages[messages.length - 1].content);
+    const controller = new AbortController();
+    const reqTimeoutId = setTimeout(() => controller.abort(), TIME_OUT_MS);
+    try {
+      const res = await fetch("/api/wanjuan", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...getHeaders(),
+        },
+        body: JSON.stringify(messages[messages.length - 1].content),
+      });
+
+      clearTimeout(reqTimeoutId);
+      options?.onMessage(await res.text(), true);
+      controller.abort();
+    } catch (err) {
+      console.error("NetWork Error", err);
+      options?.onMessage("请换一个问题试试吧", true);
     }
   }
 }

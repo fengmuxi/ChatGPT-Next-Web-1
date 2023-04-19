@@ -19,6 +19,7 @@ FROM base AS builder
 RUN apk update && apk add --no-cache git
 
 ENV OPENAI_API_KEY=""
+ENV COOKIES=""
 ENV CODE=""
 ARG DOCKER=true
 
@@ -32,6 +33,7 @@ FROM base AS runner
 WORKDIR /app
 
 ENV OPENAI_API_KEY=""
+ENV COOKIES=""
 ENV CODE=""
 
 COPY --from=builder /app/public ./public

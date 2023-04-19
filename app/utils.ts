@@ -1,3 +1,4 @@
+import { EmojiStyle } from "emoji-picker-react";
 import { showToast } from "./components/ui-lib";
 import Locale from "./locales";
 
@@ -14,21 +15,31 @@ export function trimTopic(topic: string) {
 }
 
 export function copyToClipboard(text: string) {
-  navigator.clipboard
-    .writeText(text)
-    .then((res) => {
-      showToast(Locale.Copy.Success);
-    })
-    .catch((err) => {
-      showToast(Locale.Copy.Failed);
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).catch((err) => {
+      console.error("Failed to copy: ", err);
     });
+  } else {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    try {
+      document.execCommand("copy");
+      console.log("Text copied to clipboard");
+    } catch (err) {
+      console.error("Failed to copy: ", err);
+    }
+    document.body.removeChild(textArea);
+  }
 }
 
 export function downloadAs(text: string, filename: string) {
   const element = document.createElement("a");
   element.setAttribute(
     "href",
-    "data:text/plain;charset=utf-8," + encodeURIComponent(text)
+    "data:text/plain;charset=utf-8," + encodeURIComponent(text),
   );
   element.setAttribute("download", filename);
 
@@ -61,7 +72,7 @@ export function queryMeta(key: string, defaultValue?: string): string {
   let ret: string;
   if (document) {
     const meta = document.head.querySelector(
-      `meta[name='${key}']`
+      `meta[name='${key}']`,
     ) as HTMLMetaElement;
     ret = meta?.content ?? "";
   } else {
@@ -80,4 +91,8 @@ export function getCurrentCommitId() {
   currentId = queryMeta("version");
 
   return currentId;
+}
+
+export function getEmojiUrl(unified: string, style: EmojiStyle) {
+  return `https://cdn.staticfile.org/emoji-datasource-apple/14.0.0/img/${style}/64/${unified}.png`;
 }

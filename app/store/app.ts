@@ -92,6 +92,14 @@ export const ALL_MODEL = [
     name: "AI绘画",
     available: true,
   },
+  {
+    name: "必应",
+    available: true,
+  },
+  {
+    name: "万卷",
+    available: true,
+  },
 ];
 
 export function isValidModel(name: string) {
@@ -407,19 +415,23 @@ export const useChatStore = create<ChatStore>()(
 
       summarizeSession() {
         const session = get().currentSession();
-
-        if (session.topic === DEFAULT_TOPIC && session.messages.length >= 3) {
-          // should summarize topic
-          requestWithPrompt(session.messages, Locale.Store.Prompt.Topic).then(
-            (res) => {
-              get().updateCurrentSession(
-                (session) => (session.topic = trimTopic(res)),
-              );
-            },
-          );
-        }
-
         const config = get().config;
+        if (session.topic === DEFAULT_TOPIC && session.messages.length >= 3) {
+          if (config.model == "必应" || config.model == "万卷") {
+            get().updateCurrentSession(
+              (session) => (session.topic = trimTopic(config.model)),
+            );
+          } else {
+            // should summarize topic
+            requestWithPrompt(session.messages, Locale.Store.Prompt.Topic).then(
+              (res) => {
+                get().updateCurrentSession(
+                  (session) => (session.topic = trimTopic(res)),
+                );
+              },
+            );
+          }
+        }
         let toBeSummarizedMsgs = session.messages.slice(
           session.lastSummarizeIndex,
         );
