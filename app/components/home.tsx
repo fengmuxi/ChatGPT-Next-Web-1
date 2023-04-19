@@ -598,7 +598,7 @@ export function Home() {
             ChatGPT Next 【{config.model}】
           </div>
           <div className={styles["sidebar-sub-title"]}>
-            网站马上迁移，新地址：https://fengmuxi-chatgpt-web.hf.space/
+            感谢大家一路以来的支持！
           </div>
           <div className={styles["sidebar-sub-title"]}>
             AI生成的图片将在一小时后自动失效
