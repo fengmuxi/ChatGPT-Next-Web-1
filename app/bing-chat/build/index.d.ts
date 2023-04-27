@@ -240,6 +240,7 @@ declare class BingChat {
    */
   sendMessage(text: string, opts?: SendMessageOptions): Promise<ChatMessage>;
   createConversation(): Promise<ConversationResult>;
+  createImage(message: string): Array;
 }
 
 export {

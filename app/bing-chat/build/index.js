@@ -1,4 +1,5 @@
 // src/bing-chat.ts
+import { time } from "node:console";
 import crypto from "node:crypto";
 import WebSocket from "ws";
 
@@ -259,6 +260,45 @@ var BingChat = class {
         );
       }
     });
+  }
+  async createImage(message) {
+    // const requestId = crypto.randomUUID();
+    console.log(1)
+    const cookie = this._cookie.includes(";") ? this._cookie : `_U=${this._cookie}`;
+    let res = await fetch(`https://www.bing.com/images/create?q=${message}&rt=3&FORM=GENCRE`, {
+      headers: {
+        cookie
+      },
+      method: "GET",
+      mode: "cors"
+    })
+    console.log(res.headers)
+    if (res.status!= 302) {
+      throw new Error(
+        `unexpected HTTP error createConversation ${res.status}: ${res.statusText}`
+      );
+    }
+    console.log(2)
+    redirect_url=res.headers["Location"].replace("&nfy=1", "")
+    request_id = redirect_url.split("id=")[-1]
+    await fetch("https://www.bing.com"+redirect_url,{method:"GET"})
+    polling_url = `https://www.bing.com/images/create/async/results/${request_id}?q=${message}`
+    while (true){
+       res = await fetch(polling_url,{method:"GET"})
+      if(res.json()!=''||res.json().indexOf("errorMessage") != -1){
+        await setTimeout(()=>{console.log(123)},1000)
+        continue
+      }else{
+        break
+      }
+    }
+    console.log(3)
+    image_links = res.json().match('src="([^"]+)"')
+    normal_image_links = []
+    for(let i=0 ;i<image_links.length;i++){
+      normal_image_links.push(image_links[i].split("?w=")[0])
+    }
+    return normal_image_links
   }
 };
 export {

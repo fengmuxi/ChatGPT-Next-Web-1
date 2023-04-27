@@ -93,9 +93,17 @@ export const ALL_MODEL = [
     available: true,
   },
   {
+    name: "逆向Gpt",
+    available: true,
+  },
+  {
     name: "必应",
     available: true,
   },
+  // {
+  //   name: "必应绘画",
+  //   available: true,
+  // },
   {
     name: "万卷",
     available: true,
@@ -139,7 +147,7 @@ export function filterConfig(config: ModelConfig): Partial<ModelConfig> {
 }
 
 const DEFAULT_CONFIG: ChatConfig = {
-  model: "聊天",
+  model: "逆向Gpt",
   historyMessageCount: 8,
   compressMessageLengthThreshold: 1000,
   sendBotMessages: true as boolean,

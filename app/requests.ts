@@ -38,6 +38,21 @@ const makeRequestParam = (
   };
 };
 
+const makeRevChatRequestParam = (
+  messages: Message[]
+) => {
+  let sendMessages = messages.map((v) => ({
+    role: v.role,
+    content: v.content,
+    isSensitive: false,
+    needCheck: true
+  }));
+
+  return {
+    messages: JSON.stringify(sendMessages)
+  }
+};
+
 const makeImageRequestParam = (messages: Message[]): ChatImageRequest => {
   return {
     prompt: messages[messages.length - 1].content,
@@ -214,7 +229,7 @@ export async function requestChatStream(
       console.error("NetWork Error", err);
       options?.onMessage("请换一个问题试试吧", true);
     }
-  } else {
+  } else if(model=="万卷"){
     console.log("[Request] ", messages[messages.length - 1].content);
     const controller = new AbortController();
     const reqTimeoutId = setTimeout(() => controller.abort(), TIME_OUT_MS);
@@ -234,6 +249,95 @@ export async function requestChatStream(
     } catch (err) {
       console.error("NetWork Error", err);
       options?.onMessage("请换一个问题试试吧", true);
+    }
+  }else if(model=="必应绘画"){
+    console.log("[Request] ", messages[messages.length - 1].content);
+    const req = makeImageRequestParam(messages);
+    const controller = new AbortController();
+    const reqTimeoutId = setTimeout(() => controller.abort(), TIME_OUT_MS);
+    try {
+      const res = await fetch("/api/newbing-image", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...getHeaders(),
+        },
+        body: JSON.stringify(req),
+      });
+
+      clearTimeout(reqTimeoutId);
+      const reg = /^['|"](.*)['|"]$/;
+      const response = (await res.json()) as ChatImagesResponse;
+      options?.onMessage(
+        JSON.stringify(response.data[0].url).replace(reg, "$1"),
+        true,
+      );
+      controller.abort();
+    } catch (err) {
+      console.error("NetWork Error", err);
+      options?.onMessage("请换一个问题试试吧", true);
+    }
+  }else{
+    const req = makeRevChatRequestParam(messages);
+
+    console.log("[Request] ", req);
+
+    const controller = new AbortController();
+    const reqTimeoutId = setTimeout(() => controller.abort(), TIME_OUT_MS);
+
+    try {
+      const res = await fetch("/api/revchat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...getHeaders(),
+        },
+        body: JSON.stringify(req),
+        signal: controller.signal,
+      });
+      clearTimeout(reqTimeoutId);
+
+      let responseText = "";
+
+      const finish = () => {
+        options?.onMessage(responseText, true);
+        controller.abort();
+      };
+
+      if (res.ok) {
+        const reader = res.body?.getReader();
+        const decoder = new TextDecoder();
+
+        options?.onController?.(controller);
+
+        while (true) {
+          // handle time out, will stop if no response in 10 secs
+          const resTimeoutId = setTimeout(() => finish(), TIME_OUT_MS);
+          const content = await reader?.read();
+          clearTimeout(resTimeoutId);
+          const text = decoder.decode(content?.value);
+          responseText += text;
+
+          const done = !content || content.done;
+          options?.onMessage(responseText, false);
+
+          if (done) {
+            break;
+          }
+        }
+
+        finish();
+      } else if (res.status === 401) {
+        console.error("Anauthorized");
+        responseText = Locale.Error.Unauthorized;
+        finish();
+      } else {
+        console.error("Stream Error");
+        options?.onError(new Error("Stream Error"));
+      }
+    } catch (err) {
+      console.error("NetWork Error", err);
+      options?.onError(err as Error);
     }
   }
 }
