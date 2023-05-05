@@ -17,7 +17,7 @@ export enum Theme {
 }
 
 export const DEFAULT_CONFIG = {
-  bot: "OpenAI" as BotType,
+  bot: "Lemur" as BotType,
   submitKey: SubmitKey.Enter as SubmitKey,
   avatar: "1f603",
   fontSize: 14,
