@@ -152,6 +152,7 @@ const tr: LocaleType = {
       SubTitle: "Erişim kontrolü etkinleştirme",
       Placeholder: "Erişim Kodu Gerekiyor",
     },
+    Bot: "AI Satıcıları (bot)",
     Model: "Model",
     Temperature: {
       Title: "Gerçeklik",

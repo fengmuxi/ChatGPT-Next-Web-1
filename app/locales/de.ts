@@ -154,6 +154,7 @@ const de: LocaleType = {
       SubTitle: "Zugangskontrolle aktiviert",
       Placeholder: "Zugangscode erforderlich",
     },
+    Bot: "KI-Anbieter (bot)",
     Model: "Modell",
     Temperature: {
       Title: "Temperature", //Temperatur

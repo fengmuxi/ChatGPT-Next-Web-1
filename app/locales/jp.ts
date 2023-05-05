@@ -154,6 +154,7 @@ const jp: LocaleType = {
       SubTitle: "暗号化アクセスが有効になっています",
       Placeholder: "アクセスパスワードを入力してください",
     },
+    Bot: "AIベンダー (bot)",
     Model: "モデル (model)",
     Temperature: {
       Title: "ランダム性 (temperature)",

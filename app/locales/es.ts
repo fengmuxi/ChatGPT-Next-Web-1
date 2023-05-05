@@ -152,6 +152,7 @@ const es: LocaleType = {
       SubTitle: "Control de acceso habilitado",
       Placeholder: "Necesita código de acceso",
     },
+    Bot: "Proveedores de IA (bot)",
     Model: "Modelo",
     Temperature: {
       Title: "Temperatura",

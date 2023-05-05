@@ -149,6 +149,7 @@ const tw: LocaleType = {
       SubTitle: "目前是未授權存取狀態",
       Placeholder: "請輸入授權碼",
     },
+    Bot: "AI供應商 (bot)",
     Model: "模型 (model)",
     Temperature: {
       Title: "隨機性 (temperature)",
