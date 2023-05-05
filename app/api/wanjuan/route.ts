@@ -1,18 +1,15 @@
-import { NextRequest } from "next/server";
-import { auth } from "../auth";
-
-export async function POST(req: NextRequest) {
-  const authResult = auth(req);
-  if (authResult.error) {
-    return authResult.msg;
-  }
+export async function POST(req: Request) {
   try {
+    let token = process.env.WANJUAN_TOKEN;
     let body = { message: await req.json() };
 
     console.log(JSON.stringify(body));
     let res = "";
     await fetch("http://47.94.237.159:8080/v1/wanjuan", {
       method: "POST",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
       body: JSON.stringify(body),
     })
       .then((response) => response.json())
