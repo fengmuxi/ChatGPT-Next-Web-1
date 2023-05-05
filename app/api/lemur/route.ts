@@ -1,7 +1,12 @@
 import { createParser } from "eventsource-parser";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { auth } from "../auth";
 
 async function createStream(req: NextRequest) {
+  const authResult = auth(req);
+  if (authResult.error) {
+    return authResult.msg;
+  }
   const encoder = new TextEncoder();
   const decoder = new TextDecoder();
 

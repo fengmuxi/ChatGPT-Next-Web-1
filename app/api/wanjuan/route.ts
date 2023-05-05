@@ -1,4 +1,11 @@
-export async function POST(req: Request) {
+import { NextRequest } from "next/server";
+import { auth } from "../auth";
+
+export async function POST(req: NextRequest) {
+  const authResult = auth(req);
+  if (authResult.error) {
+    return authResult.msg;
+  }
   try {
     let body = { message: await req.json() };
 
