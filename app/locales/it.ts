@@ -153,6 +153,7 @@ const it: LocaleType = {
       SubTitle: "Controllo d'accesso abilitato",
       Placeholder: "Inserisci il codice d'accesso",
     },
+    Bot: "Fornitori di intelligenza artificiale (bot)",
     Model: "Modello GPT",
     Temperature: {
       Title: "Temperature",
