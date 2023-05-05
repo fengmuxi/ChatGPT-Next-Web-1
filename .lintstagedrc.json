@@ -1,6 +1,0 @@
-{
-    "./app/**/*.{js,ts,jsx,tsx,json,html,css,scss,md}": [
-      "eslint --fix",
-      "prettier --write"
-    ]
-}
