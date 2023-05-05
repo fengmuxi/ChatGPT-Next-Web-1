@@ -5,6 +5,7 @@ emoji: 🚀
 colorFrom: red
 colorTo: red
 pinned: false
+app_port: 3000
 ---
 <div align="center">
 <img src="./docs/images/icon.svg" alt="icon"/>
