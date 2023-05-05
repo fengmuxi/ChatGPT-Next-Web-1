@@ -92,10 +92,10 @@ export const ALL_BOT = [
     name: "必应",
     available: true,
   },
-  {
-    name: "必应绘画",
-    available: true,
-  },
+  // {
+  //   name: "必应绘画",
+  //   available: true,
+  // },
   {
     name: "万卷",
     available: true,

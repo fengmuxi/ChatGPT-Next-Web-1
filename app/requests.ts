@@ -368,7 +368,7 @@ export async function requestChatStream(
     const reqTimeoutId = setTimeout(() => controller.abort(), TIME_OUT_MS);
 
     try {
-      const res = await fetch("/api/revchat", {
+      const res = await fetch("/api/lemur", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
