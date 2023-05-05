@@ -17,7 +17,8 @@ export enum Theme {
 }
 
 export const DEFAULT_CONFIG = {
-  submitKey: SubmitKey.CtrlEnter as SubmitKey,
+  bot: "OpenAI" as BotType,
+  submitKey: SubmitKey.Enter as SubmitKey,
   avatar: "1f603",
   fontSize: 14,
   theme: Theme.Auto as Theme,
@@ -35,7 +36,7 @@ export const DEFAULT_CONFIG = {
     max_tokens: 2000,
     presence_penalty: 0,
     sendMemory: true,
-    historyMessageCount: 4,
+    historyMessageCount: 8,
     compressMessageLengthThreshold: 1000,
   },
 };
@@ -78,6 +79,34 @@ export const ALL_MODELS = [
   },
 ] as const;
 
+export const ALL_BOT = [
+  {
+    name: "OpenAI",
+    available: true,
+  },
+  {
+    name: "OpenAI绘画",
+    available: true,
+  },
+  {
+    name: "必应",
+    available: true,
+  },
+  {
+    name: "必应绘画",
+    available: true,
+  },
+  {
+    name: "万卷",
+    available: true,
+  },
+  {
+    name: "Lemur",
+    available: true,
+  },
+];
+
+export type BotType = (typeof ALL_BOT)[number]["name"];
 export type ModelType = (typeof ALL_MODELS)[number]["name"];
 
 export function limitNumber(
@@ -99,7 +128,16 @@ export function limitModel(name: string) {
     : ALL_MODELS[4].name;
 }
 
+export function limitBot(name: string) {
+  return ALL_BOT.some((m) => m.name === name && m.available)
+    ? name
+    : ALL_BOT[4].name;
+}
+
 export const ModalConfigValidator = {
+  bot(x: string) {
+    return limitBot(x) as BotType;
+  },
   model(x: string) {
     return limitModel(x) as ModelType;
   },

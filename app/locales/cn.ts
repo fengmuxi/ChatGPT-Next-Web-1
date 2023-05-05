@@ -151,6 +151,7 @@ const cn = {
       SubTitle: "已开启加密访问",
       Placeholder: "请输入访问密码",
     },
+    Bot: "AI供应商 (bot)",
     Model: "模型 (model)",
     Temperature: {
       Title: "随机性 (temperature)",

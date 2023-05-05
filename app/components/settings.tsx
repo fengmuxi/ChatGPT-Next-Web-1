@@ -20,6 +20,8 @@ import {
   useUpdateStore,
   useAccessStore,
   useAppConfig,
+  ALL_BOT,
+  ModalConfigValidator,
 } from "../store";
 
 import Locale, { AllLangs, changeLang, getLang } from "../locales";
@@ -341,7 +343,7 @@ export function Settings() {
             </Popover>
           </ListItem>
 
-          <ListItem
+          {/* <ListItem
             title={Locale.Settings.Update.Version(currentVersion ?? "unknown")}
             subTitle={
               checkingUpdate
@@ -364,7 +366,7 @@ export function Settings() {
                 onClick={() => checkUpdate(true)}
               />
             )}
-          </ListItem>
+          </ListItem> */}
 
           <ListItem title={Locale.Settings.SendKey}>
             <select
@@ -558,6 +560,29 @@ export function Settings() {
               text={Locale.Settings.Prompt.Edit}
               onClick={() => setShowPromptModal(true)}
             />
+          </ListItem>
+        </List>
+
+        <List>
+          <ListItem title={Locale.Settings.Bot}>
+            <select
+              value={config.bot}
+              onChange={(e) => {
+                updateConfig(
+                  (config) =>
+                    (config.bot = ModalConfigValidator.bot(
+                      e.currentTarget.value,
+                    )),
+                );
+                chatStore.clearAll();
+              }}
+            >
+              {ALL_BOT.map((v) => (
+                <option value={v.name} key={v.name} disabled={!v.available}>
+                  {v.name}
+                </option>
+              ))}
+            </select>
           </ListItem>
         </List>
 

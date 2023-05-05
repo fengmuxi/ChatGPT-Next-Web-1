@@ -103,6 +103,7 @@ interface ChatStore {
   getMemoryPrompt: () => Message;
 
   clearAllData: () => void;
+  clearAll: () => void;
 }
 
 function countMessages(msgs: Message[]) {
@@ -397,14 +398,21 @@ export const useChatStore = create<ChatStore>()(
           session.topic === DEFAULT_TOPIC &&
           countMessages(session.messages) >= SUMMARIZE_MIN_LEN
         ) {
-          requestWithPrompt(session.messages, Locale.Store.Prompt.Topic, {
-            model: "gpt-3.5-turbo",
-          }).then((res) => {
+          const Bot = useAppConfig.getState().bot;
+          if (Bot != "OpenAI") {
             get().updateCurrentSession(
-              (session) =>
-                (session.topic = res ? trimTopic(res) : DEFAULT_TOPIC),
+              (session) => (session.topic = trimTopic(Bot)),
             );
-          });
+          } else {
+            requestWithPrompt(session.messages, Locale.Store.Prompt.Topic, {
+              model: "gpt-3.5-turbo",
+            }).then((res) => {
+              get().updateCurrentSession(
+                (session) =>
+                  (session.topic = res ? trimTopic(res) : DEFAULT_TOPIC),
+              );
+            });
+          }
         }
 
         const modelConfig = session.mask.modelConfig;
@@ -476,6 +484,11 @@ export const useChatStore = create<ChatStore>()(
 
       clearAllData() {
         localStorage.clear();
+        location.reload();
+      },
+
+      clearAll() {
+        // localStorage.clear();
         location.reload();
       },
     }),

@@ -9,6 +9,11 @@ import {
 } from "./store";
 import { showToast } from "./components/ui-lib";
 import { ACCESS_CODE_PREFIX } from "./constant";
+import {
+  ChatImageRequest,
+  ChatImagesResponse,
+} from "./api/openai-image/typing";
+import { CreateImageRequestSizeEnum } from "openai";
 
 const TIME_OUT_MS = 60000;
 
@@ -40,6 +45,26 @@ const makeRequestParam = (
     model: modelConfig.model,
     temperature: modelConfig.temperature,
     presence_penalty: modelConfig.presence_penalty,
+  };
+};
+
+const makeRevChatRequestParam = (messages: Message[]) => {
+  let sendMessages = messages.map((v) => ({
+    role: v.role,
+    content: v.content,
+    isSensitive: false,
+    needCheck: true,
+  }));
+
+  return {
+    messages: JSON.stringify(sendMessages),
+  };
+};
+
+const makeImageRequestParam = (messages: Message[]): ChatImageRequest => {
+  return {
+    prompt: messages[messages.length - 1].content,
+    size: CreateImageRequestSizeEnum._1024x1024,
   };
 };
 
@@ -155,74 +180,246 @@ export async function requestChatStream(
     onController?: (controller: AbortController) => void;
   },
 ) {
-  const req = makeRequestParam(messages, {
-    stream: true,
-    overrideModel: options?.overrideModel,
-  });
-
-  console.log("[Request] ", req);
-
-  const controller = new AbortController();
-  const reqTimeoutId = setTimeout(() => controller.abort(), TIME_OUT_MS);
-
-  try {
-    const openaiUrl = useAccessStore.getState().openaiUrl;
-    const res = await fetch(openaiUrl + "v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        ...getHeaders(),
-      },
-      body: JSON.stringify(req),
-      signal: controller.signal,
+  const Bot = useAppConfig.getState().bot;
+  if (Bot == "OpenAI") {
+    const req = makeRequestParam(messages, {
+      stream: true,
+      overrideModel: options?.overrideModel,
     });
 
-    clearTimeout(reqTimeoutId);
+    console.log("[Request] ", req);
 
-    let responseText = "";
+    const controller = new AbortController();
+    const reqTimeoutId = setTimeout(() => controller.abort(), TIME_OUT_MS);
 
-    const finish = () => {
-      options?.onMessage(responseText, true);
-      controller.abort();
-    };
+    try {
+      const openaiUrl = useAccessStore.getState().openaiUrl;
+      const res = await fetch(openaiUrl + "v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...getHeaders(),
+        },
+        body: JSON.stringify(req),
+        signal: controller.signal,
+      });
 
-    if (res.ok) {
-      const reader = res.body?.getReader();
-      const decoder = new TextDecoder();
+      clearTimeout(reqTimeoutId);
 
-      options?.onController?.(controller);
+      let responseText = "";
 
-      while (true) {
-        const resTimeoutId = setTimeout(() => finish(), TIME_OUT_MS);
-        const content = await reader?.read();
-        clearTimeout(resTimeoutId);
+      const finish = () => {
+        options?.onMessage(responseText, true);
+        controller.abort();
+      };
 
-        if (!content || !content.value) {
-          break;
+      if (res.ok) {
+        const reader = res.body?.getReader();
+        const decoder = new TextDecoder();
+
+        options?.onController?.(controller);
+
+        while (true) {
+          const resTimeoutId = setTimeout(() => finish(), TIME_OUT_MS);
+          const content = await reader?.read();
+          clearTimeout(resTimeoutId);
+
+          if (!content || !content.value) {
+            break;
+          }
+
+          const text = decoder.decode(content.value, { stream: true });
+          responseText += text;
+
+          const done = content.done;
+          options?.onMessage(responseText, false);
+
+          if (done) {
+            break;
+          }
         }
 
-        const text = decoder.decode(content.value, { stream: true });
-        responseText += text;
-
-        const done = content.done;
-        options?.onMessage(responseText, false);
-
-        if (done) {
-          break;
-        }
+        finish();
+      } else if (res.status === 401) {
+        console.error("Unauthorized");
+        options?.onError(new Error("Unauthorized"), res.status);
+      } else {
+        console.error("Stream Error", res.body);
+        options?.onError(new Error("Stream Error"), res.status);
       }
-
-      finish();
-    } else if (res.status === 401) {
-      console.error("Unauthorized");
-      options?.onError(new Error("Unauthorized"), res.status);
-    } else {
-      console.error("Stream Error", res.body);
-      options?.onError(new Error("Stream Error"), res.status);
+    } catch (err) {
+      console.error("NetWork Error", err);
+      options?.onError(err as Error);
     }
-  } catch (err) {
-    console.error("NetWork Error", err);
-    options?.onError(err as Error);
+  } else if (Bot == "OpenAI绘画") {
+    console.log("[Request] ", messages[messages.length - 1].content);
+    const req = makeImageRequestParam(messages);
+    const controller = new AbortController();
+    const reqTimeoutId = setTimeout(() => controller.abort(), TIME_OUT_MS);
+    try {
+      const res = await fetch("/api/openai-image", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...getHeaders(),
+        },
+        body: JSON.stringify(req),
+      });
+
+      clearTimeout(reqTimeoutId);
+      const reg = /^['|"](.*)['|"]$/;
+      const response = (await res.json()) as ChatImagesResponse;
+      options?.onMessage(
+        "![image](" +
+          JSON.stringify(response.data[0].url).replace(reg, "$1") +
+          ")",
+        true,
+      );
+      controller.abort();
+    } catch (err) {
+      console.error("NetWork Error", err);
+      options?.onMessage("请换一个问题试试吧", true);
+    }
+  } else if (Bot == "必应") {
+    console.log("[Request] ", messages[messages.length - 1].content);
+    const controller = new AbortController();
+    const reqTimeoutId = setTimeout(() => controller.abort(), TIME_OUT_MS);
+    try {
+      const res = await fetch("/api/newbing", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...getHeaders(),
+        },
+        body: JSON.stringify(messages[messages.length - 1].content),
+      });
+
+      clearTimeout(reqTimeoutId);
+
+      let message = await res.text();
+      // let responseText = "";
+      // for (let i = 1; i <= message.length; i++) {
+      //   // handle time out, will stop if no response in 10 secs
+      //   let messages = message.slice(0,i);
+      //   console.log(message)
+      //   responseText = messages;
+      //   options?.onMessage(responseText, false);
+      // }
+      options?.onMessage(message, true);
+      controller.abort();
+    } catch (err) {
+      console.error("NetWork Error", err);
+      options?.onMessage("请换一个问题试试吧", true);
+    }
+  } else if (Bot == "万卷") {
+    console.log("[Request] ", messages[messages.length - 1].content);
+    const controller = new AbortController();
+    const reqTimeoutId = setTimeout(() => controller.abort(), TIME_OUT_MS);
+    try {
+      const res = await fetch("/api/wanjuan", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...getHeaders(),
+        },
+        body: JSON.stringify(messages[messages.length - 1].content),
+      });
+
+      clearTimeout(reqTimeoutId);
+      options?.onMessage(await res.text(), true);
+      controller.abort();
+    } catch (err) {
+      console.error("NetWork Error", err);
+      options?.onMessage("请换一个问题试试吧", true);
+    }
+  } else if (Bot == "必应绘画") {
+    console.log("[Request] ", messages[messages.length - 1].content);
+    const req = makeImageRequestParam(messages);
+    const controller = new AbortController();
+    const reqTimeoutId = setTimeout(() => controller.abort(), TIME_OUT_MS);
+    try {
+      const res = await fetch("/api/newbing-image", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...getHeaders(),
+        },
+        body: JSON.stringify(req),
+      });
+
+      clearTimeout(reqTimeoutId);
+      const reg = /^['|"](.*)['|"]$/;
+      const response = (await res.json()) as ChatImagesResponse;
+      options?.onMessage(
+        JSON.stringify(response.data[0].url).replace(reg, "$1"),
+        true,
+      );
+      controller.abort();
+    } catch (err) {
+      console.error("NetWork Error", err);
+      options?.onMessage("请换一个问题试试吧", true);
+    }
+  } else {
+    const req = makeRevChatRequestParam(messages);
+
+    console.log("[Request] ", req);
+
+    const controller = new AbortController();
+    const reqTimeoutId = setTimeout(() => controller.abort(), TIME_OUT_MS);
+
+    try {
+      const res = await fetch("/api/revchat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...getHeaders(),
+        },
+        body: JSON.stringify(req),
+        signal: controller.signal,
+      });
+      clearTimeout(reqTimeoutId);
+
+      let responseText = "";
+
+      const finish = () => {
+        options?.onMessage(responseText, true);
+        controller.abort();
+      };
+
+      if (res.ok) {
+        const reader = res.body?.getReader();
+        const decoder = new TextDecoder();
+
+        options?.onController?.(controller);
+
+        while (true) {
+          // handle time out, will stop if no response in 10 secs
+          const resTimeoutId = setTimeout(() => finish(), TIME_OUT_MS);
+          const content = await reader?.read();
+          clearTimeout(resTimeoutId);
+          const text = decoder.decode(content?.value);
+          responseText += text;
+
+          const done = !content || content.done;
+          options?.onMessage(responseText, false);
+
+          if (done) {
+            break;
+          }
+        }
+
+        finish();
+      } else if (res.status === 401) {
+        console.error("Unauthorized");
+        options?.onError(new Error("Unauthorized"), res.status);
+      } else {
+        console.error("Stream Error", res.body);
+        options?.onError(new Error("Stream Error"), res.status);
+      }
+    } catch (err) {
+      console.error("NetWork Error", err);
+      options?.onError(err as Error);
+    }
   }
 }
 
