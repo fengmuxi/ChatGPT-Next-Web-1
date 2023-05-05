@@ -1,3 +1,11 @@
+---
+title: ChatGpt-Web
+sdk: docker
+emoji: 🚀
+colorFrom: red
+colorTo: red
+pinned: false
+---
 <div align="center">
 <img src="./docs/images/icon.svg" alt="icon"/>
 
