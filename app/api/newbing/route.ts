@@ -1,6 +1,12 @@
+import { NextRequest } from "next/server";
 import { BingChat, ChatMessage } from "../../bing-chat/index";
+import { auth } from "../auth";
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
+  const authResult = auth(req);
+  if (authResult.error) {
+    return authResult.msg;
+  }
   try {
     let cookies = process.env.COOKIES;
     const api = new BingChat({
