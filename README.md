@@ -1,9 +1,9 @@
 ---
 title: ChatGpt-Web
-sdk: docker
+sdk: gradio
 emoji: 🚀
 colorFrom: red
-colorTo: red
+colorTo: green
 pinned: false
 app_port: 3000
 ---
