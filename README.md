@@ -1,6 +1,6 @@
 ---
 title: ChatGpt-Web
-sdk: gradio
+sdk: docker
 emoji: 🚀
 colorFrom: red
 colorTo: green
