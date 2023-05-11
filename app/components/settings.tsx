@@ -9,6 +9,7 @@ import CopyIcon from "../icons/copy.svg";
 import ClearIcon from "../icons/clear.svg";
 import EditIcon from "../icons/edit.svg";
 import EyeIcon from "../icons/eye.svg";
+import LoadingIcon from "../icons/three-dots.svg";
 import { Input, List, ListItem, Modal, PasswordInput, Popover } from "./ui-lib";
 import { ModelConfigList } from "./model-config";
 
@@ -354,7 +355,7 @@ export function Settings() {
             }
           >
             {checkingUpdate ? (
-              <div />
+              <LoadingIcon />
             ) : hasNewVersion ? (
               <Link href={UPDATE_URL} target="_blank" className="link">
                 {Locale.Settings.Update.GoToUpdate}
