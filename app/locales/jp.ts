@@ -73,7 +73,12 @@ const jp: LocaleType = {
     SigState:"チェックイン状況",
     Ststus:"ログアウトする",
     Vip:"メンバー",
-    kami:"引き換えコード"
+    kami:"引き換えコード",
+    NickName:"ニックネーム",
+    User:"口座番号(番号のみ)",
+    Password:"パスワード(最低6桁)",
+    Email:"メールボックス",
+    Code:"キャプチャ"
   },
   Settings: {
     Title: "設定",

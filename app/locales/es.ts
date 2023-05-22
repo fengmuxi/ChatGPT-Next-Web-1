@@ -73,7 +73,12 @@ const es: LocaleType = {
     SigState:"Estado del check-in",
     Ststus:"Cerrar Sesión",
     Vip:"Miembro",
-    kami:"Código de canje"
+    kami:"Código de canje",
+    NickName:"Apodo",
+    User:"Número de cuenta (solo números)",
+    Password:"Contraseña (mínimo 6 dígitos)",
+    Email:"Buzón",
+    Code:"Captcha"
   },
   Settings: {
     Title: "Configuración",

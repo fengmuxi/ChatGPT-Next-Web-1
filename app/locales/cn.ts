@@ -71,7 +71,12 @@ const cn = {
     SigState:"签到状态",
     Ststus:"登出",
     Vip:"会员",
-    kami:"兑换码"
+    kami:"兑换码",
+    NickName:"昵称",
+    User:"账号(纯数字)",
+    Password:"密码(最少六位)",
+    Email:"邮箱",
+    Code:"验证码"
   },
   Settings: {
     Title: "设置",

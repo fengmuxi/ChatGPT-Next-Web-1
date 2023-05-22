@@ -73,7 +73,12 @@ const tr: LocaleType = {
     SigState:"Check-in durumu",
     Ststus:"Oturumu Kapat",
     Vip:"üye",
-    kami:"Ödeme kodu"
+    kami:"Ödeme kodu",
+    NickName:"Lakap",
+    User:"Hesap Numarası (Yalnızca Numaralar)",
+    Password:"Şifre (en az 6 haneli)",
+    Email:"Posta Kutusu",
+    Code:"Arjantin"
   },
   Settings: {
     Title: "Ayarlar",

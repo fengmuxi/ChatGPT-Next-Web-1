@@ -73,7 +73,12 @@ const it: LocaleType = {
     SigState:"Stato del check-in",
     Ststus:"Notifica della partenza",
     Vip:"Membro",
-    kami:"Codice di conversione"
+    kami:"Codice di conversione",
+    NickName:"Soprannome",
+    User:"Numero di conto (solo numeri)",
+    Password:"Password (minimo 6 cifre)",
+    Email:"Cassetta Postale",
+    Code:"Captcha"
   },
   Settings: {
     Title: "Impostazioni",

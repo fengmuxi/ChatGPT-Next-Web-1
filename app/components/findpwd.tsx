@@ -43,18 +43,18 @@ export function FindPwd(){
             <input
               type="input"
               className={styles.name}
-              placeholder="账号"
+              placeholder={Locale.User.User}
               onInput={(e) => onUser(e.currentTarget.value)}
               value={user}
             ></input>
           </div>
           <div>
-            <span className={styles.wangji}><a href="/#/login">登录</a></span>
-            <span className={styles.zhuce}><a href="/#/register">注册</a></span>
+            <span className={styles.wangji}><a href="/#/login">{Locale.User.Login}</a></span>
+            <span className={styles.zhuce}><a href="/#/register">{Locale.User.Register}</a></span>
           </div>
           <div>
             <IconButton
-              text="找回密码"
+              text={Locale.User.Findpwd}
               disabled={!!status}
               className={styles.loginButton}
               onClick={()=>{

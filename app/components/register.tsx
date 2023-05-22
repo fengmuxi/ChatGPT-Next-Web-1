@@ -88,7 +88,7 @@ export function Register(){
             <input
               type="input"
               className={styles.name}
-              placeholder="呢称"
+              placeholder={Locale.User.NickName}
               onInput={(e) => onName(e.currentTarget.value)}
               value={name}
             ></input>
@@ -97,7 +97,7 @@ export function Register(){
             <input
               type="input"
               className={styles.name}
-              placeholder="账号 (纯数字)"
+              placeholder={Locale.User.User}
               onInput={(e) => onUserName(e.currentTarget.value)}
               value={userName}
             ></input>
@@ -106,7 +106,7 @@ export function Register(){
             <input
               type="password"
               className={styles.name}
-              placeholder="密码 (最少六位)"
+              placeholder={Locale.User.Password}
               onInput={(e) => onPassword(e.currentTarget.value)}
               value={password}
             ></input>
@@ -115,7 +115,7 @@ export function Register(){
             <input
               type="input"
               className={styles.name}
-              placeholder="邮箱"
+              placeholder={Locale.User.Email}
               onInput={(e) => onMail(e.currentTarget.value)}
               value={mail}
             ></input>
@@ -124,7 +124,7 @@ export function Register(){
             <input
               type="input"
               className={styles.code}
-              placeholder="验证码"
+              placeholder={Locale.User.Code}
               onInput={(e) => onCode(e.currentTarget.value)}
               value={code}
             ></input>
@@ -138,12 +138,12 @@ export function Register(){
             ></IconButton>
           </div>
           <div>
-            <span className={styles.wangji}><a href="/#/findpwd">忘记密码</a></span>
-            <span className={styles.zhuce}><a href="/#/login">登录</a></span>
+            <span className={styles.wangji}><a href="/#/findpwd">{Locale.User.Findpwd}</a></span>
+            <span className={styles.zhuce}><a href="/#/login">{Locale.User.Login}</a></span>
           </div>
           <div>
             <IconButton
-              text="注册"
+              text={Locale.User.Register}
               disabled={!!status}
               className={styles.registerButton}
               onClick={()=>{

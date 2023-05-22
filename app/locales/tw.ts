@@ -71,7 +71,12 @@ const tw: LocaleType = {
     SigState:"簽到狀態",
     Ststus:"登出",
     Vip:"會員",
-    kami:"兌換碼"
+    kami:"兌換碼",
+    NickName:"昵稱",
+    User:"帳號（純數位）",
+    Password:"密碼（最少六位）",
+    Email:"郵箱",
+    Code:"驗證碼"
   },
   Settings: {
     Title: "設定",

@@ -73,7 +73,12 @@ const de: LocaleType = {
     SigState:"Laden sie sich ein",
     Ststus:"Logout",
     Vip:"VIP",
-    kami:"CDkey"
+    kami:"CDkey",
+    NickName:"Spitzname",
+    User:"Kontonummer (nur Nummern)",
+    Password:"Passwort (mindestens 6-stellig)",
+    Email:"Briefkasten",
+    Code:"Captcha"
   },
   Settings: {
     Title: "Einstellungen",

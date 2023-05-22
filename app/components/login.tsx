@@ -48,7 +48,7 @@ export function Login(){
             <input
               type="input"
               className={styles.name}
-              placeholder="账号"
+              placeholder={Locale.User.User}
               onInput={(e) => onUser(e.currentTarget.value)}
               value={user}
             ></input>
@@ -57,18 +57,18 @@ export function Login(){
             <input
               type="password"
               className={styles.name}
-              placeholder="密码"
+              placeholder={Locale.User.Password}
               onInput={(e) => onPassword(e.currentTarget.value)}
               value={password}
             ></input>
           </div>
           <div>
-            <span className={styles.wangji}><a href="/#/findpwd">忘记密码</a></span>
-            <span className={styles.zhuce}><a href="/#/register">注册</a></span>
+            <span className={styles.wangji}><a href="/#/findpwd">{Locale.User.Findpwd}</a></span>
+            <span className={styles.zhuce}><a href="/#/register">{Locale.User.Register}</a></span>
           </div>
           <div>
             <IconButton
-              text="登录"
+              text={Locale.User.Login}
               disabled={!!status}
               className={styles.loginButton}
               onClick={()=>{
