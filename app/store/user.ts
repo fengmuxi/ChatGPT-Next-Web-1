@@ -126,7 +126,7 @@ export const useUserStore = create<UserStore>()(
           });
           let response = await res.json() as shuixianRes
           console.log(response)
-          if(response.code=1){
+          if(response.code==1){
             useUserStore.getState().updateUser(user)
             useUserStore.getState().updatePassword(password)
             useAccessStore.getState().updateAuth(response.token)
@@ -145,7 +145,7 @@ export const useUserStore = create<UserStore>()(
           });
           let response = await res.json() as shuixianRes
           console.log(response)
-          if(response.code=1){
+          if(response.code==1){
             showToast(response.msg)
             setTimeout(()=>{
               window.location.href="/#/login"
