@@ -608,6 +608,8 @@ export function Chat() {
   const location = useLocation();
   const isChat = location.pathname === Path.Chat;
   const autoFocus = !isMobileScreen || isChat; // only focus in chat page
+  let isUser
+  let showTyping
   useCommand({
     fill: setUserInput,
     submit: (text) => {
@@ -691,12 +693,12 @@ export function Chat() {
         }}
       >
         {messages.map((message, i) => {
-          const isUser = message.role === "user";
+          isUser = message.role === "user";
           const showActions =
             !isUser &&
             i > 0 &&
             !(message.preview || message.content.length === 0);
-          const showTyping = message.preview || message.streaming;
+          showTyping = message.preview || message.streaming;
 
           return (
             <div
@@ -806,6 +808,7 @@ export function Chat() {
             onBlur={() => setAutoScroll(false)}
             rows={inputRows}
             autoFocus={autoFocus}
+            disabled={!isUser&&showTyping}
           />
           <IconButton
             icon={<SendWhiteIcon />}

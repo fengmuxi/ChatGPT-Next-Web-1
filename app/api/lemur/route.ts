@@ -103,15 +103,17 @@ async function createStream(res: Response) {
             controller.enqueue(queue);
             return;
           }
-          // https://beta.openai.com/docs/api-reference/completions/create#completions/create-stream
           try {
             const json = JSON.parse(data);
-            // console.log(json)
             if (data.indexOf("content") == -1) {
               controller.close();
               return;
             }
-            const text = JSON.parse(json.data.slice(6)).choices[0].delta.content;
+            var str=json.data.split("data:")
+            let text=""
+            for(let i=1;i<str.length;i++){
+              text=text+JSON.parse(str[i]).choices[0].delta.content
+            }
             const queue = encoder.encode(text);
             controller.enqueue(queue);
           } catch (e) {
