@@ -52,7 +52,7 @@ export interface UserStore {
     updateWallet:(wallet:number) => void;
     updateName:(name:string) => void;
     getUserInfo:() => void;
-    findpwd:(user:string) => void;
+    findPwd:(user:string) => void;
     useKami:(code:string) => void;
 }
 export const DEFAULT_USER = {
@@ -182,7 +182,7 @@ export const useUserStore = create<UserStore>()(
           let data=responsedata.data
           this.updateInfo(data.name,data.wallet,data.vip_state,data.vip_time_stmp,data.mail,data.sig_state,data.head)
         },
-        async findpwd(user) {
+        async findPwd(user) {
           let res=await fetch("/api/user/findpwd?user="+user,{
             method: "GET",
             headers:{

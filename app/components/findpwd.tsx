@@ -1,5 +1,5 @@
 import { ErrorBoundary } from "./error";
-import Locale, { AllLangs, changeLang, getLang } from "../locales";
+import Locale from "../locales";
 import ChatIcon from "../icons/chatgpt.svg"
 import styles from "./findpwd.module.scss";
 import { IconButton } from "./button";
@@ -7,16 +7,15 @@ import { useUserStore } from "../store";
 import { useState } from "react";
 
 
-export function findpwd(){ 
-  const userStore=useUserStore() 
+export function FindPwd(){ 
   const [user, setUser] = useState("");
 
   const onUser = (text: string) => {
     setUser(text)
   };
 
-  const findpwd=()=>{
-    userStore.findpwd(user)
+  function findpwd(){
+    useUserStore.getState().findPwd(user)
   }
 
   return (

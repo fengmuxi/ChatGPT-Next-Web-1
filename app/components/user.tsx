@@ -24,22 +24,22 @@ export function User() {
   const updateConfig = config.update;
 
   const accessStore = useAccessStore();
-  const userStor = useUserStore()
+  const useStor = useUserStore()
 
   const [userName, setUserName] = useState("");
   const [kami, setKami] = useState("");
   const onUserName = (text: string) => {
     setUserName(text)
-    userStor.updateName(userName)
+    useStor.updateName(userName)
   };
 
   function getVipTime(){
-    if(!userStor.vip_time_stmp){
+    if(!useStor.vip_time_stmp){
       return ""
     }
     let time=new Date().getTime();
     console.log(time)
-    time=time+Number(userStor.vip_time_stmp)*1000
+    time=time+Number(useStor.vip_time_stmp)*1000
     console.log(time)
     const date = new Date(time)
     const Y = date.getFullYear()
@@ -49,8 +49,8 @@ export function User() {
   }
 
   useEffect(()=>{
-    setUserName(()=>{return userStor.name;})
-  },[])
+    setUserName(useStor.name)
+  },[useStor.name])
 
   useEffect(() => {
     const keydownEvent = (e: KeyboardEvent) => {
@@ -113,18 +113,18 @@ export function User() {
           </ListItem>
 
           <ListItem title={Locale.User.Mail}>
-          <span>{userStor.mail}</span>
+          <span>{useStor.mail}</span>
           </ListItem>
 
           <ListItem title={Locale.User.Wallet}>
           <div className={styles.font} >
-            剩余积分：<span className={styles.wallet}>{userStor.wallet}</span>
+            剩余积分：<span className={styles.wallet}>{useStor.wallet}</span>
             </div>
           </ListItem>
 
           <ListItem title={Locale.User.Vip}>
             <div className={styles.font}>
-              <div className={styles.vipState}>{userStor.vip_state=="已开通"?"VIP":"非VIP"}</div>
+              <div className={styles.vipState}>{useStor.vip_state=="已开通"?"VIP":"非VIP"}</div>
               <div className={styles.vipTime}>{getVipTime()}</div>
             </div>
           </ListItem>
@@ -142,7 +142,7 @@ export function User() {
                 disabled={!accessStore.auth}
                 text="兑换"
                 onClick={()=>{
-                  userStor.useKami(kami)
+                  useStor.useKami(kami)
                   setKami("")
                 }}
               />
@@ -152,10 +152,10 @@ export function User() {
           <ListItem title={Locale.User.SigState}>
                 <IconButton
                 icon={<EditIcon />}
-                disabled={!accessStore.auth || userStor.sig_state=="已签到"}
+                disabled={!accessStore.auth || useStor.sig_state=="已签到"}
                 text="签到"
                 onClick={()=>{
-                  userStor.userSig()
+                  useStor.userSig()
                 }}
               />
           </ListItem>
@@ -167,7 +167,7 @@ export function User() {
                 text="登出"
                 onClick={()=>{
                   accessStore.updateAuth("")
-                  userStor.reset()
+                  useStor.reset()
                   setUserName("")
                   showToast("登出成功！")
                 }}
