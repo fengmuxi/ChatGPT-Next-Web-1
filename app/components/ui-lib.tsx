@@ -5,7 +5,7 @@ import EyeIcon from "../icons/eye.svg";
 import EyeOffIcon from "../icons/eye-off.svg";
 
 import { createRoot } from "react-dom/client";
-import React, { HTMLProps, useEffect, useState } from "react";
+import React, { HTMLProps, useEffect, useState} from "react";
 import { IconButton } from "./button";
 
 export function Popover(props: {

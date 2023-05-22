@@ -1,0 +1,74 @@
+.name{
+  border: var(--border-in-light);
+  padding: 10px;
+  border-radius: 10px;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  cursor: pointer;
+  background-color: var(--white);
+  color: var(--black);
+  text-align: left;
+}
+
+.user {
+  padding: 20px;
+  overflow: auto;
+}
+
+.font{
+  font-size: 15px;
+  padding-right: 5px;
+  text-align: center;
+  .wallet{
+    color: #2279ca;
+  };
+  .vipTime{
+    font-size: 8px;
+    padding-top: 5px;
+  };
+  .vipState{
+    color: #dc423c;
+  }
+}
+
+.sigState{
+  color: #2279ca;
+  padding-right: 10px;
+}
+
+.sigButton{
+  border: var(--border-in-light);
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  &:hover{
+    border-color: #2279ca;
+  }
+}
+
+.login{
+  text-align: center;
+  div{
+    padding: 10px;
+  }
+}
+
+.wangji{
+  padding-right: 50px;
+  font-size: 12px;
+}
+
+.zhuce{
+  padding-left: 50px;
+  font-size: 12px;
+}
+
+.loginButton{
+  background-color: #1db144;
+  color: white;
+  padding: 0;
+  width: 183px;
+  display: block;
+  margin: 0 auto;
+}

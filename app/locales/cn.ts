@@ -4,7 +4,7 @@ const cn = {
   WIP: "该功能仍在开发中……",
   Error: {
     Unauthorized:
-    "访问密码不正确或为空，请前往[设置](/#/settings)页输入正确的访问密码，或者填入你自己的 OpenAI API Key。",
+    "尚未登录，请前往[登录](/#/login)页登录。",
   },
   ChatItem: {
     ChatItemCount: (count: number) => `${count} 条对话`,
@@ -55,6 +55,21 @@ const cn = {
     DeleteChat: "确认删除选中的对话？",
     DeleteToast: "已删除会话",
     Revert: "撤销",
+  },
+  User:{
+    Title: "用户",
+    SubTitle: "用户信息界面",
+    Login:"登录",
+    LoginTitle:"用户登录",
+    Register:"注册",
+    RegisterTitle:"注册新用户",
+    Name:"用户名",
+    Wallet:"用户积分",
+    Mail:"用户邮箱",
+    SigState:"签到状态",
+    Ststus:"登出",
+    Vip:"会员",
+    kami:"兑换码"
   },
   Settings: {
     Title: "设置",

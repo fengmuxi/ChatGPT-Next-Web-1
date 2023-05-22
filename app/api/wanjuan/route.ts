@@ -1,8 +1,17 @@
-export async function POST(req: Request) {
+import { NextRequest, NextResponse } from "next/server";
+import { auth } from "../auth";
+
+export async function POST(req: NextRequest) {
   try {
     let token = process.env.WANJUAN_TOKEN;
     let body = { message: await req.json() };
 
+    const authResult = auth(req);
+    if (authResult.error) {
+    return NextResponse.json(authResult, {
+      status: 401,
+    });
+    }
     console.log(JSON.stringify(body));
     let res = "";
     await fetch("http://47.94.237.159:8080/v1/wanjuan", {

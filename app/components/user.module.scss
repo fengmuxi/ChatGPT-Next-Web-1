@@ -1,0 +1,84 @@
+.name{
+  border: var(--border-in-light);
+  padding: 10px;
+  border-radius: 10px;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  cursor: pointer;
+  background-color: var(--white);
+  color: var(--black);
+  text-align: right;
+}
+
+.kamicode{
+  border: var(--border-in-light);
+  padding: 10px;
+  border-radius: 10px;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  cursor: pointer;
+  background-color: var(--white);
+  color: var(--black);
+  text-align: right;
+}
+
+.kamiButton{
+  display: inline;
+  margin-left: 10px;
+  background-color: #e8f8ff;
+  div{
+    margin-right: 5px;
+  }
+}
+
+.avatar {
+  cursor: pointer;
+}
+
+.user {
+  padding: 20px;
+  overflow: auto;
+  height: 100%;
+}
+
+.font{
+  font-size: 15px;
+  padding-right: 5px;
+  text-align: center;
+  .wallet{
+    color: #2279ca;
+  };
+  .vipTime{
+    font-size: 8px;
+    padding-top: 5px;
+  };
+  .vipState{
+    color: #dc423c;
+  }
+}
+
+.sigState{
+  color: #2279ca;
+  padding-right: 10px;
+}
+
+.sigButton{
+  border: var(--border-in-light);
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  &:hover{
+    border-color: #2279ca;
+  }
+}
+
+.logoutButton{
+  background-color: #fc090f;
+  text-align: center;
+  color: white;
+  div{
+    margin-right: 5px;
+  }
+}

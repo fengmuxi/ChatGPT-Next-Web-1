@@ -28,6 +28,7 @@ function parseApiKey(bearToken: string) {
 
 export function auth(req: NextRequest) {
   const authToken = req.headers.get("Authorization") ?? "";
+  const auth = req.headers.get("auth") ?? "";
 
   // check if it is openai api key or user token
   const { accessCode, apiKey: token } = parseApiKey(authToken);
@@ -37,14 +38,15 @@ export function auth(req: NextRequest) {
   console.log("[Auth] allowed hashed codes: ", [...serverConfig.codes]);
   console.log("[Auth] got access code:", accessCode);
   console.log("[Auth] hashed access code:", hashedCode);
+  console.log("[Auth] get auth:",auth);
   console.log("[User IP] ", getIP(req));
   console.log("[Time] ", new Date().toLocaleString());
-
-  if (serverConfig.needCode && !serverConfig.codes.has(hashedCode) && !token) {
+  // serverConfig.needCode && !serverConfig.codes.has(hashedCode) &&
+  if (!token && !auth) {
     return {
       error: true,
       needAccessCode: true,
-      msg: "Please go settings page and fill your access code.",
+      msg: "Please go login page to login.",
     };
   }
 

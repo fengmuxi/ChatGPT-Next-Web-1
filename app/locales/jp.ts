@@ -58,6 +58,17 @@ const jp: LocaleType = {
     DeleteToast: "チャットが削除されました",
     Revert: "元に戻す",
   },
+  User:{
+    Title: "用户",
+    SubTitle: "用户信息界面",
+    Actions: {
+      ClearAll: "清除所有数据",
+      ResetAll: "重置所有选项",
+      Close: "关闭",
+      ConfirmResetAll: "确认重置所有配置？",
+      ConfirmClearAll: "确认清除所有数据？",
+    },
+  },
   Settings: {
     Title: "設定",
     SubTitle: "設定オプション",

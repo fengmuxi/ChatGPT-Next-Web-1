@@ -37,10 +37,10 @@ export const getServerSideConfig = () => {
     apiKey: process.env.OPENAI_API_KEY,
     code: process.env.CODE,
     codes: ACCESS_CODES,
-    needCode: ACCESS_CODES.size > 0,
+    needCode: ACCESS_CODES.size,
     proxyUrl: process.env.PROXY_URL,
     isVercel: !!process.env.VERCEL,
-    hideUserApiKey: !!process.env.HIDE_USER_API_KEY,
+    hideUserApiKey: !!process.env.HIDE_USER_API_KEY || true,
     enableGPT4: !process.env.DISABLE_GPT4,
   };
 };

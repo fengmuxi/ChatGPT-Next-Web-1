@@ -6,6 +6,7 @@ import {
   useAccessStore,
   useAppConfig,
   useChatStore,
+  useUserStore,
 } from "./store";
 import { showToast } from "./components/ui-lib";
 import { ACCESS_CODE_PREFIX } from "./constant";
@@ -86,6 +87,8 @@ function getHeaders() {
       ACCESS_CODE_PREFIX + accessStore.accessCode,
     );
   }
+
+  headers.Auth=useAccessStore.getState().auth.trim()
 
   return headers;
 }
@@ -170,6 +173,21 @@ export async function requestUsage() {
   };
 }
 
+function updateWallet() {
+  fetch("/api/user/set?user="+useUserStore.getState().user+"&project=wallet&projectName=num&data=1",{
+    method:"GET",
+    headers:{
+      ...getHeaders()
+    }
+  })
+  if(useUserStore.getState().wallet>0){
+    useUserStore.getState().updateWallet(1)
+    return true
+  }else{
+    return false
+  }
+}
+
 export async function requestChatStream(
   messages: Message[],
   options?: {
@@ -180,6 +198,12 @@ export async function requestChatStream(
     onController?: (controller: AbortController) => void;
   },
 ) {
+  if(useUserStore.getState().vip_state=="未开通"){
+    if(!updateWallet()){
+      options?.onMessage("积分不足请充值或开通会员！", true);
+      return
+    }
+  }
   const Bot = useAppConfig.getState().bot;
   if (Bot == "OpenAI") {
     const req = makeRequestParam(messages, {
@@ -238,7 +262,6 @@ export async function requestChatStream(
             break;
           }
         }
-
         finish();
       } else if (res.status === 401) {
         console.error("Unauthorized");
@@ -267,7 +290,8 @@ export async function requestChatStream(
       });
 
       clearTimeout(reqTimeoutId);
-      const reg = /^['|"](.*)['|"]$/;
+      if(res.ok){
+        const reg = /^['|"](.*)['|"]$/;
       const response = (await res.json()) as ChatImagesResponse;
       options?.onMessage(
         "![image](" +
@@ -276,6 +300,10 @@ export async function requestChatStream(
         true,
       );
       controller.abort();
+      }else if(res.status === 401){
+        console.error("Unauthorized");
+        options?.onError(new Error("Unauthorized"), res.status);
+      }
     } catch (err) {
       console.error("NetWork Error", err);
       options?.onMessage("请换一个问题试试吧", true);
@@ -295,8 +323,8 @@ export async function requestChatStream(
       });
 
       clearTimeout(reqTimeoutId);
-
-      let message = await res.text();
+      if(res.ok){
+        let message = await res.text();
       // let responseText = "";
       // for (let i = 1; i <= message.length; i++) {
       //   // handle time out, will stop if no response in 10 secs
@@ -307,6 +335,10 @@ export async function requestChatStream(
       // }
       options?.onMessage(message, true);
       controller.abort();
+      }else if(res.status === 401){
+        console.error("Unauthorized");
+        options?.onError(new Error("Unauthorized"), res.status);
+      }
     } catch (err) {
       console.error("NetWork Error", err);
       options?.onMessage("请换一个问题试试吧", true);
@@ -326,8 +358,13 @@ export async function requestChatStream(
       });
 
       clearTimeout(reqTimeoutId);
-      options?.onMessage(await res.text(), true);
+      if(res.ok){
+        options?.onMessage(await res.text(), true);
       controller.abort();
+      }else if(res.status === 401){
+        console.error("Unauthorized");
+        options?.onError(new Error("Unauthorized"), res.status);
+      }
     } catch (err) {
       console.error("NetWork Error", err);
       options?.onMessage("请换一个问题试试吧", true);
@@ -407,7 +444,6 @@ export async function requestChatStream(
             break;
           }
         }
-
         finish();
       } else if (res.status === 401) {
         console.error("Unauthorized");

@@ -42,6 +42,22 @@ const Chat = dynamic(async () => (await import("./chat")).Chat, {
   loading: () => <Loading noLogo />,
 });
 
+const User = dynamic(async () => (await import("./user")).User, {
+  loading: () => <Loading noLogo />,
+});
+
+const Findpwd = dynamic(async () => (await import("./findpwd")).findpwd, {
+  loading: () => <Loading noLogo />,
+});
+
+const Login = dynamic(async () => (await import("./login")).Login, {
+  loading: () => <Loading noLogo />,
+});
+
+const Register = dynamic(async () => (await import("./register")).Register, {
+  loading: () => <Loading noLogo />,
+});
+
 const NewChat = dynamic(async () => (await import("./new-chat")).NewChat, {
   loading: () => <Loading noLogo />,
 });
@@ -116,6 +132,10 @@ function Screen() {
           <Route path={Path.NewChat} element={<NewChat />} />
           <Route path={Path.Masks} element={<MaskPage />} />
           <Route path={Path.Chat} element={<Chat />} />
+          <Route path={Path.User} element={<User />} />
+          <Route path={Path.Login} element={<Login />} />
+          <Route path={Path.Findpwd} element={<Findpwd />} />
+          <Route path={Path.Register} element={<Register />} />
           <Route path={Path.Settings} element={<Settings />} />
         </Routes>
       </div>

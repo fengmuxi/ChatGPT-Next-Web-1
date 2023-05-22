@@ -23,6 +23,7 @@ import {
   useAppConfig,
   ALL_BOT,
   ModalConfigValidator,
+  useUserStore,
 } from "../store";
 
 import Locale, { AllLangs, changeLang, getLang } from "../locales";
@@ -292,6 +293,7 @@ export function Settings() {
               onClick={() => {
                 if (confirm(Locale.Settings.Actions.ConfirmClearAll)) {
                   chatStore.clearAllData();
+                  useUserStore.getState().reset();
                 }
               }}
               bordered
@@ -322,7 +324,7 @@ export function Settings() {
       </div>
       <div className={styles["settings"]}>
         <List>
-          <ListItem title={Locale.Settings.Avatar}>
+          {/* <ListItem title={Locale.Settings.Avatar}>
             <Popover
               onClose={() => setShowEmojiPicker(false)}
               content={
@@ -342,7 +344,7 @@ export function Settings() {
                 <Avatar avatar={config.avatar} />
               </div>
             </Popover>
-          </ListItem>
+          </ListItem> */}
 
           {/* <ListItem
             title={Locale.Settings.Update.Version(currentVersion ?? "unknown")}
@@ -507,7 +509,7 @@ export function Settings() {
             </ListItem>
           ) : null}
 
-          <ListItem
+          {/* <ListItem
             title={Locale.Settings.Usage.Title}
             subTitle={
               showUsage
@@ -529,7 +531,7 @@ export function Settings() {
                 onClick={() => checkUsage(true)}
               />
             )}
-          </ListItem>
+          </ListItem> */}
         </List>
 
         <List>

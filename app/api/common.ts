@@ -42,3 +42,14 @@ export async function requestOpenai(req: NextRequest) {
     body: req.body,
   });
 }
+
+export async function requestLemur(req: NextRequest) {
+  return fetch('http://lemurchat.anfans.cn/api/chat/conversation-trial', {
+    headers: {
+      "Content-Type": "application/json"
+    },
+    cache: "no-store",
+    method: req.method,
+    body: req.body,
+  });
+}

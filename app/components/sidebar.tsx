@@ -174,9 +174,9 @@ export function SideBar(props: { className?: string }) {
             </Link>
           </div>
           <div className={styles["sidebar-action"]}>
-            <a target="_blank">
+          <Link to={Path.User}>
               <IconButton icon={<GithubIcon />} shadow />
-            </a>
+            </Link>
           </div>
         </div>
         <div>

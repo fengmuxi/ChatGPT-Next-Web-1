@@ -10,9 +10,13 @@ export const RUNTIME_CONFIG_DOM = "danger-runtime-config";
 export enum Path {
   Home = "/",
   Chat = "/chat",
+  User = "/user",
   Settings = "/settings",
   NewChat = "/new-chat",
   Masks = "/masks",
+  Login = "/login",
+  Register = "/register",
+  Findpwd = "/findpwd"
 }
 
 export enum SlotID {
@@ -31,6 +35,7 @@ export enum StoreKey {
   Mask = "mask-store",
   Prompt = "prompt-store",
   Update = "chat-update",
+  User = "chat-user"
 }
 
 export const MAX_SIDEBAR_WIDTH = 500;

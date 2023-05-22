@@ -56,6 +56,17 @@ const tw: LocaleType = {
     DeleteToast: "已刪除對話",
     Revert: "撤銷",
   },
+  User:{
+    Title: "用户",
+    SubTitle: "用户信息界面",
+    Actions: {
+      ClearAll: "清除所有数据",
+      ResetAll: "重置所有选项",
+      Close: "关闭",
+      ConfirmResetAll: "确认重置所有配置？",
+      ConfirmClearAll: "确认清除所有数据？",
+    },
+  },
   Settings: {
     Title: "設定",
     SubTitle: "設定選項",
