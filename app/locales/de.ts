@@ -59,15 +59,21 @@ const de: LocaleType = {
     Revert: "Zurücksetzen",
   },
   User:{
-    Title: "用户",
-    SubTitle: "用户信息界面",
-    Actions: {
-      ClearAll: "清除所有数据",
-      ResetAll: "重置所有选项",
-      Close: "关闭",
-      ConfirmResetAll: "确认重置所有配置？",
-      ConfirmClearAll: "确认清除所有数据？",
-    },
+    Title: "User",
+    SubTitle: "Die kommandozentrale",
+    Login:"Anmeldung",
+    LoginTitle:"Einloggen",
+    Register:"Registration",
+    RegisterTitle:"Registrierte neue benutzer",
+    Findpwd:"Hol den code zurück",
+    FindpwdTitle:"Geben sie das kontonummer ein und das passwort wird an ihren briefkasten gesendet",
+    Name:"Nutzername",
+    Wallet:"UserExp",
+    Mail:"Email",
+    SigState:"Laden sie sich ein",
+    Ststus:"Logout",
+    Vip:"VIP",
+    kami:"CDkey"
   },
   Settings: {
     Title: "Einstellungen",
@@ -175,7 +181,7 @@ const de: LocaleType = {
       Title: "Max Tokens", //Maximale Token
       SubTitle: "Maximale Anzahl der Anfrage- plus Antwort-Token",
     },
-    PresencePenlty: {
+    PresencePenalty: {
       Title: "Presence Penalty", //Anwesenheitsstrafe
       SubTitle:
         "Ein größerer Wert erhöht die Wahrscheinlichkeit, dass über neue Themen gesprochen wird",

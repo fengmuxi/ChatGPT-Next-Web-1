@@ -168,6 +168,7 @@ export function User() {
                 onClick={()=>{
                   accessStore.updateAuth("")
                   userStor.reset()
+                  setUserName("")
                   showToast("登出成功！")
                 }}
               />

@@ -59,15 +59,21 @@ const en: LocaleType = {
     Revert: "Revert",
   },
   User:{
-    Title: "用户",
-    SubTitle: "用户信息界面",
-    Actions: {
-      ClearAll: "清除所有数据",
-      ResetAll: "重置所有选项",
-      Close: "关闭",
-      ConfirmResetAll: "确认重置所有配置？",
-      ConfirmClearAll: "确认清除所有数据？",
-    },
+    Title: "User",
+    SubTitle: "UserInfo",
+    Login:"Login",
+    LoginTitle:"Users Login",
+    Register:"Register",
+    RegisterTitle:"Register a new user",
+    Findpwd:"Retrieve Password",
+    FindpwdTitle:"Enter the account password and it will be sent to your email address",
+    Name:"User Name",
+    Wallet:"UserExp",
+    Mail:"Email",
+    SigState:"Check-in status",
+    Ststus:"Logout",
+    Vip:"VIP",
+    kami:"CDKEY"
   },
   Settings: {
     Title: "Settings",
@@ -173,7 +179,7 @@ const en: LocaleType = {
       Title: "Max Tokens",
       SubTitle: "Maximum length of input tokens and generated tokens",
     },
-    PresencePenlty: {
+    PresencePenalty: {
       Title: "Presence Penalty",
       SubTitle:
         "A larger value increases the likelihood to talk about new topics",
@@ -234,11 +240,11 @@ const en: LocaleType = {
   },
   NewChat: {
     Return: "Return",
-    Skip: "Skip",
+    Skip: "Just Start",
     Title: "Pick a Mask",
     SubTitle: "Chat with the Soul behind the Mask",
     More: "Find More",
-    NotShow: "Not Show Again",
+    NotShow: "Never Show Again",
     ConfirmNoShow: "Confirm to disable？You can enable it in settings later.",
   },
 

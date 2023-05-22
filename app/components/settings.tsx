@@ -598,9 +598,9 @@ export function Settings() {
         <List>
           <ModelConfigList
             modelConfig={config.modelConfig}
-            updateConfig={(upater) => {
+            updateConfig={(updater) => {
               const modelConfig = { ...config.modelConfig };
-              upater(modelConfig);
+              updater(modelConfig);
               config.update((config) => (config.modelConfig = modelConfig));
             }}
           />

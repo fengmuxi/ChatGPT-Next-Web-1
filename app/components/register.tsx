@@ -68,10 +68,10 @@ export function Register(){
       <div className="window-header">
         <div className="window-header-title">
           <div className="window-header-main-title">
-            {Locale.User.Login}
+            {Locale.User.Register}
           </div>
           <div className="window-header-sub-title">
-            {Locale.User.LoginTitle}
+            {Locale.User.RegisterTitle}
           </div>
         </div>
       </div>

@@ -59,15 +59,21 @@ const tr: LocaleType = {
     Revert: "Geri Al",
   },
   User:{
-    Title: "用户",
-    SubTitle: "用户信息界面",
-    Actions: {
-      ClearAll: "清除所有数据",
-      ResetAll: "重置所有选项",
-      Close: "关闭",
-      ConfirmResetAll: "确认重置所有配置？",
-      ConfirmClearAll: "确认清除所有数据？",
-    },
+    Title: "kullanıcı",
+    SubTitle: "Kullanıcı bilgileri arayüzü",
+    Login:"Oturum açma",
+    LoginTitle:"Kullanıcı oturum açar",
+    Register:"Kayıt",
+    RegisterTitle:"Yeni bir kullanıcı kaydetme",
+    Findpwd:"Şifreyi kurtar",
+    FindpwdTitle:"Hesap şifrenizi girin ve e-postanıza gönderilecektir",
+    Name:"Kullanıcı adı",
+    Wallet:"Kullanıcı Kredileri",
+    Mail:"Kullanıcı posta kutusu",
+    SigState:"Check-in durumu",
+    Ststus:"Oturumu Kapat",
+    Vip:"üye",
+    kami:"Ödeme kodu"
   },
   Settings: {
     Title: "Ayarlar",
@@ -175,7 +181,7 @@ const tr: LocaleType = {
       SubTitle:
         "Girdi belirteçlerinin ve oluşturulan belirteçlerin maksimum uzunluğu",
     },
-    PresencePenlty: {
+    PresencePenalty: {
       Title: "Varlık Cezası",
       SubTitle:
         "Daha büyük bir değer, yeni konular hakkında konuşma olasılığını artırır",

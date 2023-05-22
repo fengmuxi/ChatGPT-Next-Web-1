@@ -1,5 +1,4 @@
 import DeleteIcon from "../icons/delete.svg";
-import BotIcon from "../icons/bot.svg";
 
 import styles from "./home.module.scss";
 import {
@@ -12,10 +11,11 @@ import {
 import { useChatStore } from "../store";
 
 import Locale from "../locales";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Path } from "../constant";
 import { MaskAvatar } from "./mask";
 import { Mask } from "../store/mask";
+import { useRef, useEffect } from "react";
 
 export function ChatItem(props: {
   onClick?: () => void;
@@ -29,6 +29,14 @@ export function ChatItem(props: {
   narrow?: boolean;
   mask: Mask;
 }) {
+  const draggableRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (props.selected && draggableRef.current) {
+      draggableRef.current?.scrollIntoView({
+        block: "center",
+      });
+    }
+  }, [props.selected]);
   return (
     <Draggable draggableId={`${props.id}`} index={props.index}>
       {(provided) => (
@@ -37,7 +45,10 @@ export function ChatItem(props: {
             props.selected && styles["chat-item-selected"]
           }`}
           onClick={props.onClick}
-          ref={provided.innerRef}
+          ref={(ele) => {
+            draggableRef.current = ele;
+            provided.innerRef(ele);
+          }}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           title={`${props.title}\n${Locale.ChatItem.ChatItemCount(

@@ -3,6 +3,7 @@ import { persist } from "zustand/middleware";
 import { StoreKey } from "../constant";
 import { BOT_HELLO } from "./chat";
 import { ALL_MODELS } from "./config";
+import { getHeaders } from "../requests";
 
 export interface AccessControlStore {
   accessCode: string;
@@ -59,6 +60,9 @@ export const useAccessStore = create<AccessControlStore>()(
         fetchState = 1;
         fetch("/api/config", {
           method: "post",
+          headers: {
+            ...getHeaders(),
+          },
           body: null,
         })
           .then((res) => res.json())

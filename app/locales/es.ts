@@ -59,15 +59,21 @@ const es: LocaleType = {
     Revert: "Revert",
   },
   User:{
-    Title: "用户",
-    SubTitle: "用户信息界面",
-    Actions: {
-      ClearAll: "清除所有数据",
-      ResetAll: "重置所有选项",
-      Close: "关闭",
-      ConfirmResetAll: "确认重置所有配置？",
-      ConfirmClearAll: "确认清除所有数据？",
-    },
+    Title: "Usuario",
+    SubTitle: "Interfaz de información de usuario",
+    Login:"Iniciar sesión",
+    LoginTitle:"El usuario inicia sesión",
+    Register:"Inscribirse",
+    RegisterTitle:"Registrar un nuevo usuario",
+    Findpwd:"Recuperar la contraseña",
+    FindpwdTitle:"Ingrese la contraseña de su cuenta y se enviará a su correo electrónico",
+    Name:"Nombre de usuario",
+    Wallet:"Créditos de usuario",
+    Mail:"Buzón de usuario",
+    SigState:"Estado del check-in",
+    Ststus:"Cerrar Sesión",
+    Vip:"Miembro",
+    kami:"Código de canje"
   },
   Settings: {
     Title: "Configuración",
@@ -173,7 +179,7 @@ const es: LocaleType = {
       Title: "Máximo de tokens",
       SubTitle: "Longitud máxima de tokens de entrada y tokens generados",
     },
-    PresencePenlty: {
+    PresencePenalty: {
       Title: "Penalización de presencia",
       SubTitle:
         "Un valor mayor aumenta la probabilidad de hablar sobre nuevos temas",

@@ -24,10 +24,10 @@ export function findpwd(){
       <div className="window-header">
         <div className="window-header-title">
           <div className="window-header-main-title">
-            {Locale.User.Login}
+            {Locale.User.Findpwd}
           </div>
           <div className="window-header-sub-title">
-            {Locale.User.LoginTitle}
+            {Locale.User.FindpwdTitle}
           </div>
         </div>
       </div>

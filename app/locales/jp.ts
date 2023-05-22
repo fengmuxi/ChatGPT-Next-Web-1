@@ -59,15 +59,21 @@ const jp: LocaleType = {
     Revert: "元に戻す",
   },
   User:{
-    Title: "用户",
-    SubTitle: "用户信息界面",
-    Actions: {
-      ClearAll: "清除所有数据",
-      ResetAll: "重置所有选项",
-      Close: "关闭",
-      ConfirmResetAll: "确认重置所有配置？",
-      ConfirmClearAll: "确认清除所有数据？",
-    },
+    Title: "利用者",
+    SubTitle: "ユーザー情報インターフェイス",
+    Login:"ログイン",
+    LoginTitle:"ユーザーがログオンする",
+    Register:"入る",
+    RegisterTitle:"新しいユーザーを登録する",
+    Findpwd:"パスワードを回復する",
+    FindpwdTitle:"アカウントのパスワードを入力すると、メールに送信されます",
+    Name:"ユーザー名",
+    Wallet:"ユーザークレジット",
+    Mail:"ユーザー メールボックス",
+    SigState:"チェックイン状況",
+    Ststus:"ログアウトする",
+    Vip:"メンバー",
+    kami:"引き換えコード"
   },
   Settings: {
     Title: "設定",
@@ -176,7 +182,7 @@ const jp: LocaleType = {
       Title: "シングルレスポンス制限 (max_tokens)",
       SubTitle: "1回のインタラクションで使用される最大トークン数",
     },
-    PresencePenlty: {
+    PresencePenalty: {
       Title: "トピックの新鮮度 (presence_penalty)",
       SubTitle: "値が大きいほど、新しいトピックへの展開が可能になります。",
     },

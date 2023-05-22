@@ -3,12 +3,7 @@ import { persist } from "zustand/middleware";
 import { StoreKey } from "../constant";
 import { showToast } from "../components/ui-lib";
 import { useAccessStore } from "./access";
-
-function getHeaders() {
-  let headers: Record<string, string> = {};
-  headers.Auth=useAccessStore.getState().auth.trim()
-  return headers;
-}
+import { getHeaders } from "../requests";
 
 export interface shuixianRes{
   code: number,

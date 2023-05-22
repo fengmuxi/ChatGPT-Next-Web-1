@@ -57,15 +57,21 @@ const tw: LocaleType = {
     Revert: "撤銷",
   },
   User:{
-    Title: "用户",
-    SubTitle: "用户信息界面",
-    Actions: {
-      ClearAll: "清除所有数据",
-      ResetAll: "重置所有选项",
-      Close: "关闭",
-      ConfirmResetAll: "确认重置所有配置？",
-      ConfirmClearAll: "确认清除所有数据？",
-    },
+    Title: "使用者",
+    SubTitle: "使用者資訊介面",
+    Login:"登錄",
+    LoginTitle:"用戶登錄",
+    Register:"註冊",
+    RegisterTitle:"註冊新使用者",
+    Findpwd:"找回密碼",
+    FindpwdTitle:"輸入帳號密碼將發送至您的郵箱",
+    Name:"使用者名",
+    Wallet:"用戶積分",
+    Mail:"使用者郵箱",
+    SigState:"簽到狀態",
+    Ststus:"登出",
+    Vip:"會員",
+    kami:"兌換碼"
   },
   Settings: {
     Title: "設定",
@@ -170,7 +176,7 @@ const tw: LocaleType = {
       Title: "單次回應限制 (max_tokens)",
       SubTitle: "單次互動所用的最大 Token 數",
     },
-    PresencePenlty: {
+    PresencePenalty: {
       Title: "話題新穎度 (presence_penalty)",
       SubTitle: "值越大，越有可能擴展到新話題",
     },
