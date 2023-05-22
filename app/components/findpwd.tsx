@@ -9,6 +9,7 @@ import { useState } from "react";
 
 export function FindPwd(){ 
   const [user, setUser] = useState("");
+  const [status, setStatus] = useState("");
 
   const onUser = (text: string) => {
     setUser(text)
@@ -16,6 +17,10 @@ export function FindPwd(){
 
   function findpwd(){
     useUserStore.getState().findPwd(user)
+    setStatus("false")
+    setTimeout(()=>{
+      setStatus("")
+    },4000)
   }
 
   return (
@@ -50,6 +55,7 @@ export function FindPwd(){
           <div>
             <IconButton
               text="找回密码"
+              disabled={!!status}
               className={styles.loginButton}
               onClick={()=>{
                 findpwd()

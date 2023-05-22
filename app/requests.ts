@@ -175,7 +175,7 @@ export async function requestUsage() {
 
 function updateWallet() {
   fetch("/api/user/set?user="+useUserStore.getState().user+"&project=wallet&projectName=num&data=1",{
-    method:"GET",
+    method:"POST",
     headers:{
       ...getHeaders()
     }

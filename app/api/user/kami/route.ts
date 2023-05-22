@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "../../auth";
 
-export async function GET(req: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
     const authResult = auth(req);
     if (authResult.error) {

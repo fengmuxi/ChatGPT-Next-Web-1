@@ -16,6 +16,7 @@ export function Register(){
   const [password, setPassword] = useState("");
   const [mail, setMail] = useState("");
   const [code, setCode] = useState("");
+  const [status, setStatus] = useState("");
 
   const onUserName = (text: string) => {
     setUserName(text)
@@ -33,8 +34,12 @@ export function Register(){
     setCode(text)
   };
 
-  const loginTo=()=>{
+  const registerTo=()=>{
     userStore.register(userName,password,name,mail,code)
+    setStatus("false")
+    setTimeout(()=>{
+      setStatus("")
+    },4000)
   }
 
   const getMailCode=()=>{
@@ -139,9 +144,10 @@ export function Register(){
           <div>
             <IconButton
               text="注册"
+              disabled={!!status}
               className={styles.registerButton}
               onClick={()=>{
-                loginTo()
+                registerTo()
               }}
             ></IconButton>
           </div>

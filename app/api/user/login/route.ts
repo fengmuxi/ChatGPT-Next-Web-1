@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 
-export async function GET(req: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
     const admin=process.env.ADMIN
     const key=process.env.KEY

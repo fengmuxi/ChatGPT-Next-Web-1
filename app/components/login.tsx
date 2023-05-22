@@ -10,6 +10,7 @@ import { useState } from "react";
 export function Login(){ 
   const userStore=useUserStore() 
   const [user, setUser] = useState("");
+  const [status, setStatus] = useState("");
   const [password, setPassword] = useState("");
 
   const onUser = (text: string) => {
@@ -21,6 +22,10 @@ export function Login(){
 
   const loginTo=()=>{
     userStore.login(user,password)
+    setStatus("false")
+    setTimeout(()=>{
+      setStatus("")
+    },4000)
   }
 
   return (
@@ -64,6 +69,7 @@ export function Login(){
           <div>
             <IconButton
               text="登录"
+              disabled={!!status}
               className={styles.loginButton}
               onClick={()=>{
                 loginTo()

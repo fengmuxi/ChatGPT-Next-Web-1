@@ -102,7 +102,7 @@ export const useUserStore = create<UserStore>()(
         },
         async updateName(name:string){
           let res=await fetch("/api/user/set?user="+get().user+"&project=name&projectName=name&data="+name,{
-            method: "GET",
+            method: "POST",
             headers:{
               ...getHeaders()
             }
@@ -122,7 +122,7 @@ export const useUserStore = create<UserStore>()(
         },
         async login(user, password) {
           let res=await fetch("/api/user/login?user="+user+"&password="+password,{
-            method: "GET"
+            method: "POST"
           });
           let response = await res.json() as shuixianRes
           console.log(response)
@@ -130,7 +130,10 @@ export const useUserStore = create<UserStore>()(
             useUserStore.getState().updateUser(user)
             useUserStore.getState().updatePassword(password)
             useAccessStore.getState().updateAuth(response.token)
-            window.location.href="/#/chat"
+            showToast(response.msg)
+            setTimeout(()=>{
+              window.location.href="/#/chat"
+            },1000)
             await this.getUserInfo()
           }else{
             showToast(response.msg)
@@ -138,20 +141,22 @@ export const useUserStore = create<UserStore>()(
         },
         async register(user, password, name, mail, code) {
           let res=await fetch("/api/user/register?user="+user+"&password="+password+"&name="+name+"&mail="+mail+"&code="+code,{
-            method: "GET"
+            method: "POST"
           });
           let response = await res.json() as shuixianRes
           console.log(response)
           if(response.code=1){
             showToast(response.msg)
-            window.location.href="/#/login"
+            setTimeout(()=>{
+              window.location.href="/#/login"
+            },1000)
           }else{
             showToast(response.msg)
           }
         },
         async getMailCode(user:string,mail:string) {
           let res=await fetch("/api/user/mail?user="+user+"&mail="+mail,{
-            method: "GET"
+            method: "POST"
           });
           let response = await res.json() as shuixianRes
           console.log(response)
@@ -159,7 +164,7 @@ export const useUserStore = create<UserStore>()(
         },
         async userSig() {
           let res=await fetch("/api/user/sig?user="+get().user+"&password="+get().password,{
-            method: "GET",
+            method: "POST",
             headers:{
               ...getHeaders()
             }
@@ -173,7 +178,7 @@ export const useUserStore = create<UserStore>()(
         },
         async getUserInfo() {
           let resdata=await fetch("/api/user/info?user="+get().user+"&password="+get().password,{
-            method: "GET",
+            method: "POST",
             headers:{
               ...getHeaders()
             }
@@ -184,7 +189,7 @@ export const useUserStore = create<UserStore>()(
         },
         async findPwd(user) {
           let res=await fetch("/api/user/findpwd?user="+user,{
-            method: "GET",
+            method: "POST",
             headers:{
               ...getHeaders()
             }
@@ -199,7 +204,7 @@ export const useUserStore = create<UserStore>()(
         },
         async useKami(code) {
           let res=await fetch("/api/user/kami?user="+get().user+"&password="+get().password+"&code="+code,{
-            method: "GET",
+            method: "POST",
             headers:{
               ...getHeaders()
             }
