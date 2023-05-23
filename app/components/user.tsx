@@ -166,7 +166,7 @@ export function User() {
                 <IconButton
                 icon={<EditIcon />}
                 disabled={!accessStore.auth || useStor.sig_state=="已签到"}
-                text="签到"
+                text="签到(送积分)"
                 onClick={()=>{
                   useStor.userSig()
                 }}
