@@ -101,15 +101,15 @@ export const ALL_MODELS = [
 
 export const ALL_BOT = [
   {
-    name: "OpenAI",
+    name: "OpenAI (VIP)",
     available: true,
   },
   {
-    name: "OpenAI绘画",
+    name: "OpenAI绘画 (VIP)",
     available: true,
   },
   {
-    name: "必应",
+    name: "必应 (VIP)",
     available: true,
   },
   // {
@@ -117,7 +117,7 @@ export const ALL_BOT = [
   //   available: true,
   // },
   {
-    name: "万卷",
+    name: "万卷 (VIP)",
     available: true,
   },
   {

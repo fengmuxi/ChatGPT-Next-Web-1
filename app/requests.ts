@@ -216,6 +216,10 @@ export async function requestChatStream(
     onController?: (controller: AbortController) => void;
   },
 ) {
+  if(!useAccessStore.getState().auth){
+    options?.onError(new Error("Unauthorized"), 401);
+      return
+  }
   let vip=await isVip()
   const Bot = useAppConfig.getState().bot;
   if(!vip){
