@@ -152,7 +152,7 @@ export function User() {
             </div>
           </ListItem>
 
-          <ListItem title={Locale.User.SigState}>
+          <ListItem title="充值">
                 <IconButton
                 icon={<EditIcon />}
                 text="购买卡密"
