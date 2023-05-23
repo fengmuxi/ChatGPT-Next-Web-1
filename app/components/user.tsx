@@ -159,7 +159,7 @@ export function User() {
                 icon={<EditIcon />}
                 text="购买卡密"
                 onClick={()=>{
-                  window.location.href="https://qtka.scgzfw.cn/details/B74975C8"
+                  window.location.href="https://qtka.scgzfw.cn/links/879AEC7D"
                 }}
               />
           </ListItem>
