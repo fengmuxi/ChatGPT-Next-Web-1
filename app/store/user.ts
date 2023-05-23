@@ -184,8 +184,12 @@ export const useUserStore = create<UserStore>()(
             }
           });
           let responsedata=await resdata.json() as shuixianRes
-          let data=responsedata.data
+          if(responsedata.code==1){
+            let data=responsedata.data
           this.updateInfo(data.name,data.wallet,data.vip_state,data.vip_time_stmp,data.mail,data.sig_state,data.head)
+          }else{
+            showToast(responsedata.msg)
+          }
         },
         async findPwd(user) {
           let res=await fetch("/api/user/findpwd?user="+user,{

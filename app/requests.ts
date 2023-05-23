@@ -3,6 +3,7 @@ import {
   Message,
   ModelConfig,
   ModelType,
+  shuixianRes,
   useAccessStore,
   useAppConfig,
   useChatStore,
@@ -188,6 +189,23 @@ function updateWallet() {
   }
 }
 
+async function isVip() {
+  let res=await fetch("/api/user/vip?user="+useUserStore.getState().user+"&password="+useUserStore.getState().password,{
+    method:"POST",
+    headers:{
+      ...getHeaders()
+    }
+  })
+  let response=await res.json() as shuixianRes
+  if(response.code==1){
+    if(response.msg=="1"){
+      return true
+    }
+  }
+  return false
+}
+
+
 export async function requestChatStream(
   messages: Message[],
   options?: {
@@ -198,13 +216,78 @@ export async function requestChatStream(
     onController?: (controller: AbortController) => void;
   },
 ) {
-  if(useUserStore.getState().vip_state=="未开通"){
+  let vip=await isVip()
+  const Bot = useAppConfig.getState().bot;
+  if(!vip){
     if(!updateWallet()){
-      options?.onMessage("积分不足请充值或开通会员！", true);
+      options?.onMessage("积分不足请购买积分或会员卡密！", true);
+      return
+    }
+    if (Bot == "Lemur"){
+      const req = makeRevChatRequestParam(messages);
+  
+      console.log("[Request] ", req);
+  
+      const controller = new AbortController();
+      const reqTimeoutId = setTimeout(() => controller.abort(), TIME_OUT_MS);
+  
+      try {
+        const res = await fetch("/api/lemur", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ...getHeaders(),
+          },
+          body: JSON.stringify(req),
+          signal: controller.signal,
+        });
+        clearTimeout(reqTimeoutId);
+  
+        let responseText = "";
+  
+        const finish = () => {
+          options?.onMessage(responseText, true);
+          controller.abort();
+        };
+  
+        if (res.ok) {
+          const reader = res.body?.getReader();
+          const decoder = new TextDecoder();
+  
+          options?.onController?.(controller);
+  
+          while (true) {
+            // handle time out, will stop if no response in 10 secs
+            const resTimeoutId = setTimeout(() => finish(), TIME_OUT_MS);
+            const content = await reader?.read();
+            clearTimeout(resTimeoutId);
+            const text = decoder.decode(content?.value);
+            responseText += text;
+  
+            const done = !content || content.done;
+            options?.onMessage(responseText, false);
+  
+            if (done) {
+              break;
+            }
+          }
+          finish();
+        } else if (res.status === 401) {
+          console.error("Unauthorized");
+          options?.onError(new Error("Unauthorized"), res.status);
+        } else {
+          console.error("Stream Error", res.body);
+          options?.onError(new Error("Stream Error"), res.status);
+        }
+      } catch (err) {
+        console.error("NetWork Error", err);
+        options?.onError(err as Error);
+      }
+    }else{
+      options?.onMessage("该模型需要开通会员才能使用！", true);
       return
     }
   }
-  const Bot = useAppConfig.getState().bot;
   if (Bot == "OpenAI") {
     const req = makeRequestParam(messages, {
       stream: true,
@@ -396,7 +479,7 @@ export async function requestChatStream(
       console.error("NetWork Error", err);
       options?.onMessage("请换一个问题试试吧", true);
     }
-  } else {
+  }else{
     const req = makeRevChatRequestParam(messages);
 
     console.log("[Request] ", req);

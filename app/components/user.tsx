@@ -49,6 +49,7 @@ export function User() {
   }
 
   useEffect(()=>{
+    useStor.getUserInfo()
     setUserName(useStor.name)
   },[useStor.name])
 
@@ -128,7 +129,9 @@ export function User() {
               <div className={styles.vipTime}>{getVipTime()}</div>
             </div>
           </ListItem>
+          </List>
 
+          <List>
           <ListItem title={Locale.User.kami}>
             <div>
               <input
@@ -152,6 +155,16 @@ export function User() {
           <ListItem title={Locale.User.SigState}>
                 <IconButton
                 icon={<EditIcon />}
+                text="购买卡密"
+                onClick={()=>{
+                  window.location.href="https://qtka.scgzfw.cn/details/B74975C8"
+                }}
+              />
+          </ListItem>
+
+          <ListItem title={Locale.User.SigState}>
+                <IconButton
+                icon={<EditIcon />}
                 disabled={!accessStore.auth || useStor.sig_state=="已签到"}
                 text="签到"
                 onClick={()=>{
@@ -159,8 +172,10 @@ export function User() {
                 }}
               />
           </ListItem>
+          </List>
 
-          <ListItem title={Locale.User.Ststus}>
+          <List>
+            <ListItem title={Locale.User.Ststus}>
                 <IconButton
                 className={styles.logoutButton}
                 disabled={!accessStore.auth}
@@ -173,7 +188,7 @@ export function User() {
                 }}
               />
           </ListItem>
-        </List>
+          </List>
       </div>
     </ErrorBoundary>
   );
