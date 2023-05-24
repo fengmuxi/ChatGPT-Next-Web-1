@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
     const name=req.nextUrl.searchParams.get("name")
     const mail=req.nextUrl.searchParams.get("mail")
     const code=req.nextUrl.searchParams.get("code")
-    let res=await fetch("https://dujiaoka.dwzynj.top/main/api/user/register.php?admin="+admin+"&key="+key+"&user="+user+"&password="+password+"&name="+name+"&mail="+mail+"&code="+code, {
+    let res=await fetch("http://shuixian.ltd/main/api/user/register.php?admin="+admin+"&key="+key+"&user="+user+"&password="+password+"&name="+name+"&mail="+mail+"&code="+code, {
       method: "GET"
     })
     let msg=await res.json()
