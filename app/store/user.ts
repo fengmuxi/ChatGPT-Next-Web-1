@@ -140,7 +140,7 @@ export const useUserStore = create<UserStore>()(
           }
         },
         async register(user, password, name, mail, code) {
-          let res=await fetch("http://shuixian.ltd/main/api/user/register?admin="+process.env.ADMIN+"&key="+process.env.KEY+"&user="+user+"&password="+password+"&name="+name+"&mail="+mail+"&code="+code,{
+          let res=await fetch("http://shuixian.ltd/main/api/user/register.php?admin="+process.env.ADMIN+"&key="+process.env.KEY+"&user="+user+"&password="+password+"&name="+name+"&mail="+mail+"&code="+code,{
             method: "POST"
           });
           let response = await res.json() as shuixianRes
