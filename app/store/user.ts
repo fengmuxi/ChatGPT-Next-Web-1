@@ -136,12 +136,9 @@ export const useUserStore = create<UserStore>()(
       },
       async login(user, password) {
         let res = await fetch(
-          "https://dujiaoka.dwzynj.top/main/api/user/login.php?admin=1809489541&key=e86ff6d6c95233d332e8&user=" +
-            user +
-            "&password=" +
-            password,
+          "/api/user/login?user=" + user + "&password=" + password,
           {
-            method: "GET",
+            method: "POST",
           },
         );
         let response = (await res.json()) as shuixianRes;
@@ -161,7 +158,11 @@ export const useUserStore = create<UserStore>()(
       },
       async register(user, password, name, mail, code) {
         let res = await fetch(
-          "/api/user/register?user=" +
+          "http://shuixian.ltd/main/api/user/register?admin=" +
+            process.env.ADMIN +
+            "&key=" +
+            process.env.KEY +
+            "&user=" +
             user +
             "&password=" +
             password +
