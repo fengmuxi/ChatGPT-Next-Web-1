@@ -163,11 +163,7 @@ export const useUserStore = create<UserStore>()(
             "&password=" +
             password +
             "&name=" +
-            name +
-            "&mail=" +
-            mail +
-            "&code=" +
-            code,
+            name,
           {
             method: "POST",
           },
