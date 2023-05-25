@@ -157,26 +157,35 @@ export const useUserStore = create<UserStore>()(
         }
       },
       async register(user, password, name, mail, code) {
-        let res = await fetch(
-          "/api/user/register?user=" +
-            user +
-            "&password=" +
-            password +
-            "&name=" +
-            name,
-          {
+        let login = await fetch("/api/user/loginadmin",{
             method: "POST",
           },
         );
-        let response = (await res.json()) as shuixianRes;
-        console.log(response);
-        if (response.code == 1) {
-          showToast(response.msg);
-          setTimeout(() => {
-            window.location.href = "/#/login";
-          }, 1000);
+        let response1 = (await login.json()) as shuixianRes;
+        if (response1.code == 1) {
+          let res = await fetch(
+            "/api/user/register?user=" +
+              user +
+              "&password=" +
+              password +
+              "&name=" +
+              name+"&token="+response1.token,
+            {
+              method: "POST",
+            },
+          );
+          let response = (await res.json()) as shuixianRes;
+          console.log(response);
+          if (response.code == 1) {
+            showToast("注册成功");
+            setTimeout(() => {
+              window.location.href = "/#/login";
+            }, 1000);
+          } else {
+            showToast(response.msg);
+          }
         } else {
-          showToast(response.msg);
+          showToast("注册异常");
         }
       },
       async getMailCode(user: string, mail: string) {
