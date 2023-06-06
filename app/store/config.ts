@@ -108,10 +108,10 @@ export const ALL_BOT = [
     name: "OpenAI绘画 (VIP)",
     available: true,
   },
-  {
-    name: "必应 (VIP)",
-    available: true,
-  },
+  // {
+  //   name: "必应 (VIP)",
+  //   available: true,
+  // },
   // {
   //   name: "必应绘画",
   //   available: true,
