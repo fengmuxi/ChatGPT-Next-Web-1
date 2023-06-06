@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 import styles from "./user.module.scss";
 import EditIcon from "../icons/edit.svg";
-import { List, ListItem, Popover, showModal, showToast } from "./ui-lib";
+import { List, ListItem, Modal, Popover, showModal, showToast } from "./ui-lib";
 
 import { IconButton } from "./button";
 import {
@@ -16,11 +16,84 @@ import { ErrorBoundary } from "./error";
 import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarPicker } from "./emoji";
 import { useUserStore } from "../store/user";
-import { useStore } from "zustand";
+
+function UserPwdModal(props: { onClose?: () => void }) {
+  const useStor = useUserStore()
+  const [oldPwd, setOldPwd] = useState('');
+  const [newPwd, setNewPwd] = useState('');
+  const [newPwd1, setNewPwd1] = useState('');
+
+  async function updatePass():Promise<any>{
+    if(newPwd!=newPwd1){
+      showToast("两次输入的新密码不一致！")
+      return false
+    }
+    if(oldPwd==newPwd1||oldPwd==newPwd){
+      showToast("新密码与旧密码一致！")
+      return false
+    }
+    await useStor.updatePass(oldPwd,newPwd)
+  }
+
+  return (
+    <div className="modal-mask">
+      <Modal
+        title={Locale.User.Pass.Title}
+        onClose={() => props.onClose?.()}
+        actions={[
+          <IconButton
+            key="add"
+            icon={<EditIcon />}
+            onClick={()=>{
+              updatePass().then(()=>{
+                props.onClose?.()
+              })
+            }}
+            bordered
+            text={Locale.User.Save}
+          />,
+        ]}
+      >
+        <div>
+          <List>
+            <ListItem title={Locale.User.Pass.OldPwd}>
+                <input
+                  type="password"
+                  className={styles.kamicode}
+                  value={oldPwd}
+                  onChange={(e)=>{setOldPwd(e.currentTarget.value)}}
+                  >
+                </input>
+            </ListItem>
+            <ListItem title={Locale.User.Pass.NewPwd}>
+                <input
+                  type="password"
+                  className={styles.kamicode}
+                  value={newPwd}
+                  onChange={(e)=>{setNewPwd(e.currentTarget.value)}}
+                  >
+                </input>
+            </ListItem>
+            <ListItem title={Locale.User.Pass.NewPwd1}>
+                <input
+                  type="password"
+                  className={styles.kamicode}
+                  value={newPwd1}
+                  onChange={(e)=>{setNewPwd1(e.currentTarget.value)}}
+                  >
+                </input>
+            </ListItem>
+          </List>
+        </div>
+      </Modal>
+    </div>
+  );
+}
 
 export function User() {
   const navigate = useNavigate();
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [shouldShowPwdModal, setShowPwdModal] = useState(false);
   const config = useAppConfig();
   const updateConfig = config.update;
 
@@ -164,7 +237,6 @@ export function User() {
 
           <ListItem title="充值">
                 <IconButton
-                icon={<EditIcon />}
                 text="购买卡密"
                 onClick={()=>{
                   window.location.href="https://qtka.scgzfw.cn/links/879AEC7D"
@@ -174,11 +246,19 @@ export function User() {
 
           <ListItem title={Locale.User.SigState}>
                 <IconButton
-                icon={<EditIcon />}
                 disabled={!accessStore.auth}
                 text="签到(送积分)"
                 onClick={()=>{
                   useStor.userSig()
+                }}
+              />
+          </ListItem>
+          <ListItem title={Locale.User.Pass.Title}>
+                <IconButton
+                disabled={!accessStore.auth}
+                text={Locale.User.Pass.Title}
+                onClick={()=>{
+                  setShowPwdModal(true)
                 }}
               />
           </ListItem>
@@ -191,14 +271,18 @@ export function User() {
                 disabled={!accessStore.auth}
                 text="登出"
                 onClick={()=>{
-                  accessStore.updateAuth("")
-                  useStor.reset()
-                  setUserName("")
+                  useStor.logOut().then(()=>{
+                    accessStore.updateAuth("")
+                    setUserName("")
+                  })
                   showToast("登出成功！")
                 }}
               />
           </ListItem>
           </List>
+          {shouldShowPwdModal && (
+          <UserPwdModal onClose={() => setShowPwdModal(false)} />
+        )}
       </div>
     </ErrorBoundary>
   );

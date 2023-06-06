@@ -78,7 +78,14 @@ const en: LocaleType = {
     User:"Account Number (Numbers Only)",
     Password:"Password (minimum 6 digits)",
     Email:"Email",
-    Code:"Captcha"
+    Code:"Captcha",
+    Pass:{
+      Title:"Update Password",
+      OldPwd:"Old Password",
+      NewPwd:"New Password",
+      NewPwd1:"Check Password"
+    },
+    Save:"保存"
   },
   Settings: {
     Title: "Settings",

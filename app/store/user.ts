@@ -79,8 +79,11 @@ export interface UserStore {
   updateWallet: (wallet: number) => void;
   updateName: (name: string) => void;
   getUserInfo: () => void;
-  findPwd: (user: string) => void;
+  findPwd: (mail: string,code:string) => void;
   useKami: (code: string) => void;
+  logOut:()=>any;
+  getRestPwdCode:(mail:string)=>void;
+  updatePass:(oldPass:string,newPass:string)=>void;
 }
 export const DEFAULT_USER = {
   user: "",
@@ -202,7 +205,7 @@ export const useUserStore = create<UserStore>()(
           }, 1000);
           await this.getUserInfo();
         } else {
-          showToast("登录失败！");
+          showToast(response.message);
         }
       },
       async register(user, password, name, mail, code) {
@@ -285,19 +288,19 @@ export const useUserStore = create<UserStore>()(
           }
         }
       },
-      async findPwd(user) {
-        let res = await fetch("/api/user/findpwd?user=" + user, {
+      async findPwd(mail,code) {
+        let res = await fetch("/api/user/findpwd?mail=" + mail+"&code="+code, {
           method: "POST",
           headers: {
             ...getHeaders(),
           },
         });
-        let response = (await res.json()) as shuixianRes;
+        let response = (await res.json()) as eladminRes;
         console.log(response);
-        if (response.code == 1) {
+        if (response.flag) {
           showToast("密码已发送至您的邮箱，请注意查收！");
         } else {
-          showToast(response.msg);
+          showToast(response.message);
         }
       },
       async useKami(code) {
@@ -327,6 +330,53 @@ export const useUserStore = create<UserStore>()(
           }
         }
       },
+      async logOut(){
+        await fetch(
+          "/api/user/logout",
+          {
+            method: "POST",
+            headers: {
+              ...getHeaders(),
+            },
+          },
+        );
+        this.reset()
+      },
+      async getRestPwdCode(mail){
+        await fetch(
+          "/api/user/restmail?mail="+mail,
+          {
+            method: "POST",
+            headers: {
+              ...getHeaders(),
+            },
+          },
+        );
+        showToast("发送成功！可能在垃圾邮箱中！")
+      },
+      async updatePass(oldPass,newPass){
+        let body={
+          oldPass:encrypt(oldPass),
+          newPass:encrypt(newPass)
+        }
+        let res=await fetch(
+          "/api/user/updatePass",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              ...getHeaders(),
+            },
+            body:JSON.stringify(body)
+          },
+        );
+        res=await res.json()
+        if(res.message==null){
+          showToast("修改成功！")
+        }else{
+          showToast(res.message)
+        }
+      }
     }),
     {
       name: StoreKey.User,

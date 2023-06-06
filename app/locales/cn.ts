@@ -76,7 +76,14 @@ const cn = {
     User:"账号(纯数字)",
     Password:"密码(最少六位)",
     Email:"邮箱",
-    Code:"验证码"
+    Code:"验证码",
+    Pass:{
+      Title:"修改密码",
+      OldPwd:"旧密码",
+      NewPwd:"新密码",
+      NewPwd1:"确认密码"
+    },
+    Save:"保存"
   },
   Settings: {
     Title: "设置",

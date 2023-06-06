@@ -78,7 +78,14 @@ const jp: LocaleType = {
     User:"口座番号(番号のみ)",
     Password:"パスワード(最低6桁)",
     Email:"メールボックス",
-    Code:"キャプチャ"
+    Code:"キャプチャ",
+    Pass:{
+      Title:"修改密码",
+      OldPwd:"旧密码",
+      NewPwd:"新密码",
+      NewPwd1:"确认密码"
+    },
+    Save:"保存"
   },
   Settings: {
     Title: "設定",

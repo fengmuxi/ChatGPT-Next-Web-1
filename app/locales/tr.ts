@@ -78,7 +78,14 @@ const tr: LocaleType = {
     User:"Hesap Numarası (Yalnızca Numaralar)",
     Password:"Şifre (en az 6 haneli)",
     Email:"Posta Kutusu",
-    Code:"Arjantin"
+    Code:"Arjantin",
+    Pass:{
+      Title:"修改密码",
+      OldPwd:"旧密码",
+      NewPwd:"新密码",
+      NewPwd1:"确认密码"
+    },
+    Save:"保存"
   },
   Settings: {
     Title: "Ayarlar",

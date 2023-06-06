@@ -27,8 +27,8 @@ export function Login(){
   };
 
   const loginTo=async ()=>{
-    await userStore.login(user,password,code)
     setStatus("false")
+    await userStore.login(user,password,code)
     setTimeout(()=>{
       setStatus("")
     },4000)

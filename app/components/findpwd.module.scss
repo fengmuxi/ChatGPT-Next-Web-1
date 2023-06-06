@@ -55,12 +55,12 @@
 }
 
 .wangji{
-  padding-right: 70px;
+  padding-right: 60px;
   font-size: 12px;
 }
 
 .zhuce{
-  padding-left: 70px;
+  padding-left: 60px;
   font-size: 12px;
 }
 
@@ -68,7 +68,36 @@
   background-color: #1db144;
   color: white;
   padding: 0;
-  width: 193px;
+  width: 183px;
   display: block;
   margin: 0 auto;
+}
+
+.code{
+  border: var(--border-in-light);
+  padding: 10px;
+  margin-right: 10px;
+  border-radius: 10px;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  cursor: pointer;
+  background-color: var(--white);
+  color: var(--black);
+  text-align: left;
+  width: 60px;
+}
+
+.codebox{
+  vertical-align: bottom;
+}
+
+.codeButton{
+  background-color: #1db144;
+  color: white;
+  padding: 0;
+  width: 93px;
+  display: inline;
+  margin: 0 auto;
+  font-size: 8px;
 }

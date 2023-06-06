@@ -10,8 +10,8 @@ export async function POST(req: NextRequest) {
       });
     }
     const token=req.headers.get("auth") ?? ""
-    let res=await fetch("https://eladmin.dwzynj.top/api/users/sig", {
-      method: "GET",
+    let res=await fetch("https://eladmin.dwzynj.top/auth/logout", {
+      method: "DELETE",
       headers:{
         "Authorization":token
       }
@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
     return new Response(JSON.stringify(msg))
     }
     let msg=await res.json()
-    // console.log(msg)
+    console.log(msg)
     return new Response(JSON.stringify(msg))
   } catch (e) {
     console.error("[eladmin] ", e);

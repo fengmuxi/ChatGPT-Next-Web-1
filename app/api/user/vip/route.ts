@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
     console.log(msg)
     return new Response(JSON.stringify(msg))
   } catch (e) {
-    console.error("[shuixian] ", e);
+    console.error("[eladmin] ", e);
     return new Response(JSON.stringify(e));
   }
 }

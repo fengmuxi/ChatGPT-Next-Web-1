@@ -76,7 +76,14 @@ const tw: LocaleType = {
     User:"帳號（純數位）",
     Password:"密碼（最少六位）",
     Email:"郵箱",
-    Code:"驗證碼"
+    Code:"驗證碼",
+    Pass:{
+      Title:"修改密码",
+      OldPwd:"旧密码",
+      NewPwd:"新密码",
+      NewPwd1:"确认密码"
+    },
+    Save:"保存"
   },
   Settings: {
     Title: "設定",
