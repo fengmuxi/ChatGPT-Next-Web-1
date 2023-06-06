@@ -85,7 +85,7 @@ const en: LocaleType = {
       NewPwd:"New Password",
       NewPwd1:"Check Password"
     },
-    Save:"保存"
+    Save:"Save"
   },
   Settings: {
     Title: "Settings",
