@@ -213,6 +213,7 @@ export function Settings() {
   const updateConfig = config.update;
   const resetConfig = config.reset;
   const chatStore = useChatStore();
+  const userStore = useUserStore();
 
   const updateStore = useUpdateStore();
   const [checkingUpdate, setCheckingUpdate] = useState(false);
@@ -298,8 +299,10 @@ export function Settings() {
               icon={<ClearIcon />}
               onClick={() => {
                 if (confirm(Locale.Settings.Actions.ConfirmClearAll)) {
-                  chatStore.clearAllData();
-                  useUserStore.getState().reset();
+                  userStore.logOut().then(()=>{
+                    chatStore.clearAllData();
+                    useUserStore.getState().reset();
+                  })
                 }
               }}
               bordered
