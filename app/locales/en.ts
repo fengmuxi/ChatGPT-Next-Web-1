@@ -249,7 +249,7 @@ const en: LocaleType = {
     Title: "Pick a Mask",
     SubTitle: "Chat with the Soul behind the Mask",
     More: "Find More",
-    NotShow: "Never Show Again",
+    NotShow: "Not Show Again",
     ConfirmNoShow: "Confirm to disable？You can enable it in settings later.",
   },
 

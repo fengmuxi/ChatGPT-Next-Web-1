@@ -10,24 +10,31 @@ export async function POST(req: NextRequest) {
       });
     }
     const token=req.headers.get("auth") ?? ""
-    const admin=process.env.ADMIN
-    const key=process.env.KEY
-    const user=req.nextUrl.searchParams.get("user")
-    const project=req.nextUrl.searchParams.get("project")
-    const projectName=req.nextUrl.searchParams.get("projectName")
-    const data=req.nextUrl.searchParams.get("data")
-    let res=await fetch("https://dujiaoka.dwzynj.top/main/api/user/user_set.php?admin="+admin+"&key="+key+"&user="+user+"&project="+project+"&"+projectName+"="+data, {
-        method: "GET",
+    const name=req.nextUrl.searchParams.get("name")
+    let body={
+      nickName:name
+    }
+    let res=await fetch("https://eladmin.dwzynj.top/api/users/myCenter", {
+        method: "PUT",
         headers:{
-          "token":token
+          "Content-Type":'application/json;charset=utf-8',
+          "Authorization":token
         },
+        body:JSON.stringify(body)
       })
-
+      if(res.status==401){
+        let msg={
+          flag:false,
+          msg:"未登录！"
+        }
+      // console.log(res.status)
+      return new Response(JSON.stringify(msg))
+      }
     let msg=await res.json()
     // console.log(msg)
     return new Response(JSON.stringify(msg))
   } catch (e) {
-    console.error("[shuixian] ", e);
+    console.error("[eladmin] ", e);
     return new Response(JSON.stringify(e));
   }
 }

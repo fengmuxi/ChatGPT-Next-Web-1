@@ -4,7 +4,8 @@ import ChatIcon from "../icons/chatgpt.svg"
 import styles from "./login.module.scss";
 import { IconButton } from "./button";
 import { useUserStore } from "../store";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Image from 'next/image'
 
 
 export function Login(){ 
@@ -12,6 +13,8 @@ export function Login(){
   const [user, setUser] = useState("");
   const [status, setStatus] = useState("");
   const [password, setPassword] = useState("");
+  const [code, setCode] = useState("");
+  const [img, setImg] = useState("");
 
   const onUser = (text: string) => {
     setUser(text)
@@ -19,14 +22,28 @@ export function Login(){
   const onPassword = (text: string) => {
     setPassword(text)
   };
+  const onCode = (text: string) => {
+    setCode(text)
+  };
 
-  const loginTo=()=>{
-    userStore.login(user,password)
+  const loginTo=async ()=>{
+    await userStore.login(user,password,code)
     setStatus("false")
     setTimeout(()=>{
       setStatus("")
     },4000)
+    getCode()
   }
+
+  async function getCode (){
+    let img=await userStore.getCode();
+    setImg(img)
+  }
+
+  useEffect(()=>{
+    userStore.getCode()
+    setImg(userStore.img)
+  },[])
 
   return (
     <ErrorBoundary>
@@ -61,6 +78,22 @@ export function Login(){
               onInput={(e) => onPassword(e.currentTarget.value)}
               value={password}
             ></input>
+          </div>
+          <div className={styles.codeImg}>
+            <input
+              type="input"
+              className={styles.code}
+              placeholder={Locale.User.Code}
+              onInput={(e) => onCode(e.currentTarget.value)}
+              value={code}
+            ></input>
+            <Image
+              src={img}
+              alt="验证码"
+              width={80}
+              height={40}
+              onClick={getCode}
+            ></Image>
           </div>
           <div>
             <span className={styles.wangji}><a href="/#/findpwd">{Locale.User.Findpwd}</a></span>

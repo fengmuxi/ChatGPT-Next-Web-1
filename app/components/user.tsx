@@ -16,6 +16,7 @@ import { ErrorBoundary } from "./error";
 import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarPicker } from "./emoji";
 import { useUserStore } from "../store/user";
+import { useStore } from "zustand";
 
 export function User() {
   const navigate = useNavigate();
@@ -33,14 +34,21 @@ export function User() {
     useStor.updateName(userName)
   };
 
-  function getVipTime(){
-    if(!useStor.vip_time_stmp){
-      return ""
+  function getVip(){
+    const curDate = new Date();
+    const paramDate = new Date(useStor.vip_time.replace(/-/g, "/")); 
+    console.log(paramDate);
+    if (curDate >= paramDate) {
+        return true;
     }
-    let time=new Date().getTime();
-    console.log(time)
-    time=time+Number(useStor.vip_time_stmp)*1000
-    console.log(time)
+    return false;
+  }
+
+  function getVipTime(){
+    let time = String(new Date());
+    if(useStor.vip_time!=null || useStor.vip_time!=''){
+      time=useStor.vip_time
+    }
     const date = new Date(time)
     const Y = date.getFullYear()
     const M = date.getMonth() + 1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1 
@@ -127,7 +135,7 @@ export function User() {
 
           <ListItem title={Locale.User.Vip}>
             <div className={styles.font}>
-              <div className={styles.vipState}>{useStor.vip_state=="已开通"?"VIP":"非VIP"}</div>
+              <div className={styles.vipState}>{getVip()?"非会员":"会员"}</div>
               <div className={styles.vipTime}>{getVipTime()}</div>
             </div>
           </ListItem>
@@ -167,7 +175,7 @@ export function User() {
           <ListItem title={Locale.User.SigState}>
                 <IconButton
                 icon={<EditIcon />}
-                disabled={!accessStore.auth || useStor.sig_state=="已签到"}
+                disabled={!accessStore.auth}
                 text="签到(送积分)"
                 onClick={()=>{
                   useStor.userSig()

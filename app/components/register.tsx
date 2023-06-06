@@ -43,7 +43,7 @@ export function Register(){
   }
 
   const getMailCode=()=>{
-    userStore.getMailCode(userName,mail)
+    userStore.getMailCode(mail)
     getCode()
   }
   var countdown=60;
@@ -84,7 +84,7 @@ export function Register(){
       <div>
         <div className={styles.register}>
           <div><ChatIcon></ChatIcon></div>
-          <div className={styles.title}>账号为QQ号将自动绑定QQ邮箱方便找回密码</div>
+          {/* <div className={styles.title}>账号为QQ号将自动绑定QQ邮箱方便找回密码</div> */}
           <div>
             <input
               type="input"
@@ -112,7 +112,7 @@ export function Register(){
               value={password}
             ></input>
           </div>
-          {/* <div>
+          <div>
             <input
               type="input"
               className={styles.name}
@@ -137,7 +137,7 @@ export function Register(){
                 getMailCode()
               }}
             ></IconButton>
-          </div> */}
+          </div>
           <div>
             <span className={styles.wangji}><a href="/#/findpwd">{Locale.User.Findpwd}</a></span>
             <span className={styles.zhuce}><a href="/#/login">{Locale.User.Login}</a></span>

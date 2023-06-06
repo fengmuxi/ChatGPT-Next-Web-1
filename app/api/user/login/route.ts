@@ -2,18 +2,30 @@ import { NextRequest } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
-    const admin=process.env.ADMIN
-    const key=process.env.KEY
-    const user=req.nextUrl.searchParams.get("user")
-    const password=req.nextUrl.searchParams.get("password")
-    let res=await fetch("https://dujiaoka.dwzynj.top/main/api/user/login.php?admin="+admin+"&key="+key+"&user="+user+"&password="+password, {
-      method: "GET"
+    // console.log(req.body)
+    // const user=req.nextUrl.searchParams.get("user")
+    // const password=req.nextUrl.searchParams.get("password")
+    // const code=req.nextUrl.searchParams.get("code")
+    // const uuid=req.nextUrl.searchParams.get("uuid")
+    // let body={
+    //   "username": user,
+    //   "password": password,
+    //   "code": code,
+    //   "uuid": uuid
+    // }
+    // console.log(await req.json())
+    let res=await fetch("https://eladmin.dwzynj.top/auth/loginWeb", {
+      method: "POST",
+      headers:{
+        "Content-Type":'application/json'
+      },
+      body:JSON.stringify(await req.json())
     })
     let msg=await res.json()
     // console.log(msg)
     return new Response(JSON.stringify(msg))
   } catch (e) {
-    console.error("[shuixian] ", e);
+    console.error("[eladmin] ", e);
     return new Response(JSON.stringify(e));
   }
 }

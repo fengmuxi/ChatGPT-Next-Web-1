@@ -10,8 +10,8 @@ export async function POST(req: NextRequest) {
       });
     }
     const token=req.headers.get("auth") ?? ""
-    const code=req.nextUrl.searchParams.get("code")
-    let res=await fetch("https://eladmin.dwzynj.top/api/userKami/exchangeKaMi?kaMi="+code, {
+    const wallet=req.nextUrl.searchParams.get("wallet")
+    let res=await fetch("https://eladmin.dwzynj.top/api/users/setWallet?number="+wallet, {
         method: "GET",
         headers:{
           "Authorization":token
@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
       return new Response(JSON.stringify(msg))
       }
     let msg=await res.json()
-    console.log(msg)
+    // console.log(msg)
     return new Response(JSON.stringify(msg))
   } catch (e) {
     console.error("[eladmin] ", e);

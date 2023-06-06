@@ -4,6 +4,7 @@ import { StoreKey } from "../constant";
 import { showToast } from "../components/ui-lib";
 import { useAccessStore } from "./access";
 import { getHeaders } from "../requests";
+import { encrypt } from "../rsaEncrypt";
 
 export interface shuixianRes {
   code: number;
@@ -23,18 +24,36 @@ export interface shuixianRes {
   };
 }
 
+function getLogin(){
+  setTimeout(() => {
+    window.location.href = "/#/login";
+  }, 1000);
+}
+
+export interface eladminRes {
+  data:object;
+  flag:boolean;
+  msg:string;
+}
+
+export interface codeRes {
+  uuid:string;
+  img:string;
+}
+
 export interface UserStore {
   user: string;
   password: string;
   name: string;
   wallet: number;
-  vip_state: string;
-  vip_time_stmp: string;
+  vip_time: string;
   mail: string;
   sig_state: string;
   head: string;
+  uuid: string;
+  img: string;
   update: (updater: (user: UserInfo) => void) => void;
-  login: (userName: string, password: string) => void;
+  login: (userName: string, password: string,code:string) => void;
   register: (
     user: string,
     password: string,
@@ -42,16 +61,17 @@ export interface UserStore {
     mail: string,
     code: string,
   ) => void;
-  getMailCode: (user: string, mail: string) => void;
+  getMailCode: (mail: string) => void;
   userSig: () => void;
+  setUuidAndImg:(uuid:string,img:string) => void;
+  getCode:() => any;
   reset: () => void;
   updateUser: (user: string) => void;
   updatePassword: (password: string) => void;
   updateInfo: (
     name: string,
     wallet: number,
-    vip_state: string,
-    vip_time_stmp: string,
+    vip_time: string,
     mail: string,
     sig_state: string,
     head: string,
@@ -67,11 +87,12 @@ export const DEFAULT_USER = {
   password: "",
   name: "",
   wallet: 0,
-  vip_state: "",
-  vip_time_stmp: "",
+  vip_time: "",
   mail: "",
   sig_state: "",
   head: "",
+  uuid:"",
+  img:""
 };
 export type UserInfo = typeof DEFAULT_USER;
 export const useUserStore = create<UserStore>()(
@@ -86,8 +107,7 @@ export const useUserStore = create<UserStore>()(
       updateInfo(
         name: string,
         wallet: number,
-        vip_state: string,
-        vip_time_stmp: string,
+        vip_time: string,
         mail: string,
         sig_state: string,
         head: string,
@@ -95,8 +115,7 @@ export const useUserStore = create<UserStore>()(
         set(() => ({
           name: name,
           wallet: wallet,
-          vip_state: vip_state,
-          vip_time_stmp: vip_time_stmp,
+          vip_time: vip_time,
           mail: mail,
           sig_state: sig_state,
           head: head,
@@ -108,12 +127,12 @@ export const useUserStore = create<UserStore>()(
       updateUser(user: string) {
         set(() => ({ user: user }));
       },
-      async updateName(name: string) {
+      setUuidAndImg(uuid: string,img:string) {
+        set(() => ({ uuid: uuid, img:img}));
+      },
+      async getCode() {
         let res = await fetch(
-          "/api/user/set?user=" +
-            get().user +
-            "&project=name&projectName=name&data=" +
-            name,
+          "/api/user/code",
           {
             method: "POST",
             headers: {
@@ -121,11 +140,30 @@ export const useUserStore = create<UserStore>()(
             },
           },
         );
-        let response = (await res.json()) as shuixianRes;
+        let response = (await res.json()) as codeRes;
+        console.log(response);
+        this.setUuidAndImg(response.uuid,response.img)
+        return response.img
+      },
+      async updateName(name: string) {
+        let res = await fetch(
+          "/api/user/set?name="+name,
+          {
+            method: "POST",
+            headers: {
+              ...getHeaders(),
+            },
+          },
+        );
+        let response = (await res.json()) as eladminRes;
         console.log(response);
         showToast(response.msg);
-        if (response.code == 1) {
+        if (response.flag) {
           await this.getUserInfo();
+        }else{
+          if(response.msg=="未登录！"){
+            getLogin()
+          }
         }
       },
       updatePassword(password: string) {
@@ -134,49 +172,54 @@ export const useUserStore = create<UserStore>()(
       updateWallet(wallet: number) {
         set(() => ({ wallet: get().wallet - wallet }));
       },
-      async login(user, password) {
+      async login(user, password,code) {
+        let enPassword=encrypt(password);
+        console.log(enPassword)
+        let body={
+          "username": user,
+          "password": enPassword,
+          "code": code,
+          "uuid": get().uuid
+        }
         let res = await fetch(
-          "/api/user/login?user=" + user + "&password=" + password,
+          "/api/user/login",
           {
             method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body:JSON.stringify(body)
           },
         );
-        let response = (await res.json()) as shuixianRes;
+        let response = (await res.json()) as eladminRes;
         console.log(response);
-        if (response.code == 1) {
+        if (response.flag) {
           useUserStore.getState().updateUser(user);
-          useUserStore.getState().updatePassword(password);
-          useAccessStore.getState().updateAuth(response.token);
-          showToast(response.msg);
+          useAccessStore.getState().updateAuth(response.data.token);
+          showToast("登录成功！");
           setTimeout(() => {
             window.location.href = "/#/chat";
           }, 1000);
           await this.getUserInfo();
         } else {
-          showToast(response.msg);
+          showToast("登录失败！");
         }
       },
       async register(user, password, name, mail, code) {
-        let login = await fetch("/api/user/loginadmin",{
-            method: "POST",
-          },
-        );
-        let response1 = (await login.json()) as shuixianRes;
-        if (response1.code == 1) {
           let res = await fetch(
             "/api/user/register?user=" +
               user +
               "&password=" +
               password +
               "&name=" +
-              name+"&token="+response1.token,
+              name+"&mail="+mail+"&code="+code,
             {
               method: "POST",
             },
           );
-          let response = (await res.json()) as shuixianRes;
+          let response = (await res.json()) as eladminRes;
           console.log(response);
-          if (response.code == 1) {
+          if (response.flag) {
             showToast("注册成功");
             setTimeout(() => {
               window.location.href = "/#/login";
@@ -184,21 +227,18 @@ export const useUserStore = create<UserStore>()(
           } else {
             showToast(response.msg);
           }
-        } else {
-          showToast("注册异常");
-        }
       },
-      async getMailCode(user: string, mail: string) {
-        let res = await fetch("/api/user/mail?user=" + user + "&mail=" + mail, {
+      async getMailCode(mail: string) {
+        let res = await fetch("/api/user/mail?mail=" + mail, {
           method: "POST",
         });
-        let response = (await res.json()) as shuixianRes;
+        let response = (await res.json()) as eladminRes;
         console.log(response);
         showToast(response.msg);
       },
       async userSig() {
         let res = await fetch(
-          "/api/user/sig?user=" + get().user + "&password=" + get().password,
+          "/api/user/sig",
           {
             method: "POST",
             headers: {
@@ -206,16 +246,20 @@ export const useUserStore = create<UserStore>()(
             },
           },
         );
-        let response = (await res.json()) as shuixianRes;
+        let response = (await res.json()) as eladminRes;
         console.log(response);
         showToast(response.msg);
-        if (response.code == 1) {
+        if (response.flag) {
           await this.getUserInfo();
+        }else{
+          if(response.msg=="未登录！"){
+            getLogin()
+          }
         }
       },
       async getUserInfo() {
         let resdata = await fetch(
-          "/api/user/info?user=" + get().user + "&password=" + get().password,
+          "/api/user/info",
           {
             method: "POST",
             headers: {
@@ -223,20 +267,22 @@ export const useUserStore = create<UserStore>()(
             },
           },
         );
-        let responsedata = (await resdata.json()) as shuixianRes;
-        if (responsedata.code == 1) {
+        let responsedata = (await resdata.json()) as eladminRes;
+        if (responsedata.flag) {
           let data = responsedata.data;
           this.updateInfo(
-            data.name,
+            data.nickName,
             data.wallet,
-            data.vip_state,
-            data.vip_time_stmp,
-            data.mail,
-            data.sig_state,
+            data.vipTime,
+            data.email,
+            data.sigState,
             data.head,
           );
         } else {
           showToast(responsedata.msg);
+          if(response.msg=="未登录！"){
+            getLogin()
+          }
         }
       },
       async findPwd(user) {
@@ -269,13 +315,16 @@ export const useUserStore = create<UserStore>()(
             },
           },
         );
-        let response = (await res.json()) as shuixianRes;
+        let response = (await res.json()) as eladminRes;
         console.log(response);
-        if (response.code == 1) {
+        if (response.flag) {
           showToast(response.msg);
           await this.getUserInfo();
         } else {
           showToast(response.msg);
+          if(response.msg=="未登录！"){
+            getLogin()
+          }
         }
       },
     }),

@@ -11,6 +11,25 @@
   text-align: left;
 }
 
+.codeImg{
+  display: flex;
+  justify-content:center;
+}
+
+.code{
+  border: var(--border-in-light);
+  padding: 10px;
+  border-radius: 10px;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  cursor: pointer;
+  width: 100px;
+  background-color: var(--white);
+  color: var(--black);
+  text-align: left;
+}
+
 .user {
   padding: 20px;
   overflow: auto;

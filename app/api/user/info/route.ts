@@ -10,21 +10,25 @@ export async function POST(req: NextRequest) {
       });
     }
     const token=req.headers.get("auth") ?? ""
-    const admin=process.env.ADMIN
-    const key=process.env.KEY
-    const user=req.nextUrl.searchParams.get("user")
-    const password=req.nextUrl.searchParams.get("password")
-    let res=await fetch("https://dujiaoka.dwzynj.top/main/api/user/user_data.php?admin="+admin+"&key="+key+"&user="+user+"&password="+password, {
+    let res=await fetch("https://eladmin.dwzynj.top/api/users/getInfo", {
       method: "GET",
       headers:{
-        "token":token
+        "Authorization":token
       }
     })
+    if(res.status==401){
+      let msg={
+        flag:false,
+        msg:"未登录！"
+      }
+    // console.log(res.status)
+    return new Response(JSON.stringify(msg))
+    }
     let msg=await res.json()
     // console.log(msg)
     return new Response(JSON.stringify(msg))
   } catch (e) {
-    console.error("[shuixian] ", e);
+    console.error("[eladmin] ", e);
     return new Response(JSON.stringify(e));
   }
 }

@@ -3,6 +3,7 @@ import {
   Message,
   ModelConfig,
   ModelType,
+  eladminRes,
   shuixianRes,
   useAccessStore,
   useAppConfig,
@@ -175,7 +176,7 @@ export async function requestUsage() {
 }
 
 function updateWallet() {
-  fetch("/api/user/set?user="+useUserStore.getState().user+"&project=wallet&projectName=num&data=1",{
+  fetch("/api/user/wallet?wallet=1",{
     method:"POST",
     headers:{
       ...getHeaders()
@@ -190,19 +191,26 @@ function updateWallet() {
 }
 
 async function isVip() {
-  let res=await fetch("/api/user/vip?user="+useUserStore.getState().user+"&password="+useUserStore.getState().password,{
+  let res=await fetch("/api/user/vip",{
     method:"POST",
     headers:{
       ...getHeaders()
     }
   })
-  let response=await res.json() as shuixianRes
-  if(response.code==1){
-    if(response.msg=="1"){
+  let response=await res.json() as eladminRes
+  if(response.flag){
+    if(response.msg=="会员"){
       return true
     }
+  }else{
+    if(response.msg=="未登录！"){
+      showToast("未登录！")
+      setTimeout(() => {
+        window.location.href = "/#/login";
+      }, 1000);
+    }
+    return false
   }
-  return false
 }
 
 
