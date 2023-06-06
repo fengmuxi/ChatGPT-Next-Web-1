@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
         flag:false,
         msg:"未登录！"
       }
-    // console.log(res.status)
+    console.log(res.status)
     return new Response(JSON.stringify(msg))
     }
     let msg=await res.json()

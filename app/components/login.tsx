@@ -6,6 +6,7 @@ import { IconButton } from "./button";
 import { useUserStore } from "../store";
 import { useEffect, useState } from "react";
 import Image from 'next/image'
+import { encrypt } from "../rsaEncrypt";
 
 
 export function Login(){ 
@@ -28,7 +29,7 @@ export function Login(){
 
   const loginTo=async ()=>{
     setStatus("false")
-    await userStore.login(user,password,code)
+    await userStore.login(user,String(encrypt(password)),code)
     setTimeout(()=>{
       setStatus("")
     },4000)

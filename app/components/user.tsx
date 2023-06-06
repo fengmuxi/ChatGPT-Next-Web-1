@@ -16,6 +16,7 @@ import { ErrorBoundary } from "./error";
 import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarPicker } from "./emoji";
 import { useUserStore } from "../store/user";
+import { encrypt } from "../rsaEncrypt";
 
 function UserPwdModal(props: { onClose?: () => void }) {
   const useStor = useUserStore()
@@ -32,7 +33,7 @@ function UserPwdModal(props: { onClose?: () => void }) {
       showToast("新密码与旧密码一致！")
       return false
     }
-    await useStor.updatePass(oldPwd,newPwd)
+    await useStor.updatePass(String(encrypt(oldPwd)),String(encrypt(newPwd)))
   }
 
   return (

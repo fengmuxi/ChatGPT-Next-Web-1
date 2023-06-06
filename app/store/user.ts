@@ -4,7 +4,6 @@ import { StoreKey } from "../constant";
 import { showToast } from "../components/ui-lib";
 import { useAccessStore } from "./access";
 import { getHeaders } from "../requests";
-import { encrypt } from "../rsaEncrypt";
 
 export interface shuixianRes {
   code: number;
@@ -31,9 +30,19 @@ function getLogin(){
 }
 
 export interface eladminRes {
-  data:object;
+  data:{
+    user:object;
+    token:string;
+    nickName:string;
+    wallet:number;
+    vipTime:string;
+    email:string;
+    sigState:string;
+    head:string;
+  };
   flag:boolean;
   msg:string;
+  message:string;
 }
 
 export interface codeRes {
@@ -176,11 +185,9 @@ export const useUserStore = create<UserStore>()(
         set(() => ({ wallet: get().wallet - wallet }));
       },
       async login(user, password,code) {
-        let enPassword=encrypt(password);
-        console.log(enPassword)
         let body={
           "username": user,
-          "password": enPassword,
+          "password": password,
           "code": code,
           "uuid": get().uuid
         }
@@ -356,8 +363,8 @@ export const useUserStore = create<UserStore>()(
       },
       async updatePass(oldPass,newPass){
         let body={
-          oldPass:encrypt(oldPass),
-          newPass:encrypt(newPass)
+          oldPass:oldPass,
+          newPass:newPass
         }
         let res=await fetch(
           "/api/user/updatePass",
@@ -370,11 +377,11 @@ export const useUserStore = create<UserStore>()(
             body:JSON.stringify(body)
           },
         );
-        res=await res.json()
-        if(res.message==null){
+        let ress=(await res.json()) as eladminRes
+        if(ress.message==null){
           showToast("修改成功！")
         }else{
-          showToast(res.message)
+          showToast(ress.message)
         }
       }
     }),
