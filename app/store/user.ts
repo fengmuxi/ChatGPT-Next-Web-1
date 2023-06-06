@@ -131,7 +131,7 @@ export const useUserStore = create<UserStore>()(
         set(() => ({ user: user }));
       },
       setUuidAndImg(uuid: string,img:string) {
-        set(() => ({ uuid: uuid, img:img}));
+        set(() => ({ uuid:uuid, img:img}));
       },
       async getCode() {
         let res = await fetch(
@@ -283,7 +283,7 @@ export const useUserStore = create<UserStore>()(
           );
         } else {
           showToast(responsedata.msg);
-          if(response.msg=="未登录！"){
+          if(responsedata.msg=="未登录！"){
             getLogin()
           }
         }

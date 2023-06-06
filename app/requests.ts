@@ -300,7 +300,7 @@ export async function requestChatStream(
       return
     }
   }
-  if (Bot == "OpenAI") {
+  if (Bot == "OpenAI (VIP)") {
     const req = makeRequestParam(messages, {
       stream: true,
       overrideModel: options?.overrideModel,
@@ -369,7 +369,7 @@ export async function requestChatStream(
       console.error("NetWork Error", err);
       options?.onError(err as Error);
     }
-  } else if (Bot == "OpenAI绘画") {
+  } else if (Bot == "OpenAI绘画 (VIP)") {
     console.log("[Request] ", messages[messages.length - 1].content);
     const req = makeImageRequestParam(messages);
     const controller = new AbortController();
@@ -403,7 +403,7 @@ export async function requestChatStream(
       console.error("NetWork Error", err);
       options?.onMessage("请换一个问题试试吧", true);
     }
-  } else if (Bot == "必应") {
+  } else if (Bot == "必应 (VIP)") {
     console.log("[Request] ", messages[messages.length - 1].content);
     const controller = new AbortController();
     const reqTimeoutId = setTimeout(() => controller.abort(), TIME_OUT_MS);
@@ -438,7 +438,7 @@ export async function requestChatStream(
       console.error("NetWork Error", err);
       options?.onMessage("请换一个问题试试吧", true);
     }
-  } else if (Bot == "万卷") {
+  } else if (Bot == "万卷 (VIP)") {
     console.log("[Request] ", messages[messages.length - 1].content);
     const controller = new AbortController();
     const reqTimeoutId = setTimeout(() => controller.abort(), TIME_OUT_MS);

@@ -12,6 +12,7 @@ async function createStream(res: Response) {
       function onParse(event: any) {
         if (event.type === "event") {
           const data = event.data;
+          // console.log(data)
           // https://beta.openai.com/docs/api-reference/completions/create#completions/create-stream
           if (data === "[DONE]") {
             controller.close();

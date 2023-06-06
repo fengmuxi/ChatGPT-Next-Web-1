@@ -105,7 +105,7 @@ async function createStream(res: Response) {
           }
           try {
             const json = JSON.parse(data);
-            if (data.indexOf("content") == -1) {
+            if (data.indexOf("content") == -1||data.origin=="lemur") {
               controller.close();
               return;
             }

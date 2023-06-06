@@ -41,8 +41,7 @@ export function Login(){
   }
 
   useEffect(()=>{
-    userStore.getCode()
-    setImg(userStore.img)
+    getCode()
   },[])
 
   return (
