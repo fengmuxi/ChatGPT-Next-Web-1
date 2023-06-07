@@ -5,7 +5,7 @@ import { ACCESS_CODE_PREFIX } from "../constant";
 
 const serverConfig = getServerSideConfig();
 
-function getIP(req: NextRequest) {
+export function getIP(req: NextRequest) {
   let ip = req.ip ?? req.headers.get("x-real-ip");
   const forwardedFor = req.headers.get("x-forwarded-for");
 

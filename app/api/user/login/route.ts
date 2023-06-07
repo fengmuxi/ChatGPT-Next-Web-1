@@ -1,4 +1,5 @@
 import { NextRequest } from "next/server";
+import { getIP } from "../../auth";
 
 export async function POST(req: NextRequest) {
   try {
@@ -17,7 +18,8 @@ export async function POST(req: NextRequest) {
     let res=await fetch("https://eladmin.dwzynj.top/auth/loginWeb", {
       method: "POST",
       headers:{
-        "Content-Type":'application/json'
+        "Content-Type":'application/json',
+        "UserIp": String(getIP(req))
       },
       body:JSON.stringify(await req.json())
     })

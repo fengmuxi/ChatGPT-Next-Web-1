@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "../../auth";
+import { auth, getIP } from "../../auth";
 
 export async function POST(req: NextRequest) {
   try {
@@ -13,7 +13,8 @@ export async function POST(req: NextRequest) {
     let res=await fetch("https://eladmin.dwzynj.top/api/users/getInfo", {
       method: "GET",
       headers:{
-        "Authorization":token
+        "Authorization":token,
+        "UserIp": String(getIP(req))
       }
     })
     if(res.status==401){

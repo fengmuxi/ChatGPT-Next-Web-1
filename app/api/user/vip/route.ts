@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "../../auth";
+import { auth, getIP } from "../../auth";
 
 export async function POST(req: NextRequest) {
   try {
@@ -13,9 +13,11 @@ export async function POST(req: NextRequest) {
     let res=await fetch("https://eladmin.dwzynj.top/api/users/isVip", {
       method: "GET",
       headers:{
-        "Authorization":token
+        "Authorization":token,
+        "UserIp": String(getIP(req))
       }
     })
+    // console.log(req.headers)
     if(res.status==401){
       let msg={
         flag:false,

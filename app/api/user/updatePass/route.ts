@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "../../auth";
+import { auth, getIP } from "../../auth";
 
 export async function POST(req: NextRequest) {
   try {
@@ -14,7 +14,8 @@ export async function POST(req: NextRequest) {
         method: "POST",
         headers:{
           "Content-Type":'application/json;charset=utf-8',
-          "Authorization":token
+          "Authorization":token,
+          "UserIp": String(getIP(req))
         },
         body:JSON.stringify(await req.json())
       })

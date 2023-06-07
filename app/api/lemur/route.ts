@@ -96,6 +96,7 @@ async function createStream(res: Response) {
       function onParse(event: any) {
         if (event.type === "event") {
           const data = event.data;
+          // console.log(data)
           if (event.id == "1") {
             let text1 = data.slice(data.indexOf("content"));
             const text = text1.slice(12, text1.indexOf("index") - 6);
