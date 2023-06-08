@@ -198,19 +198,7 @@ async function isVip() {
     }
   })
   let response=await res.json() as eladminRes
-  if(response.flag){
-    if(response.msg=="会员"){
-      return true
-    }
-  }else{
-    if(response.msg=="未登录！"){
-      showToast("未登录！")
-      setTimeout(() => {
-        window.location.href = "/#/login";
-      }, 1000);
-    }
-    return false
-  }
+  return response
 }
 
 
@@ -230,7 +218,15 @@ export async function requestChatStream(
   }
   let vip=await isVip()
   const Bot = useAppConfig.getState().bot;
-  if(!vip){
+  if(!vip.flag){
+    if(vip.msg=="未登录！"){
+      showToast("未登录！")
+      options?.onError(new Error("Unauthorized"), 401);
+      setTimeout(() => {
+        window.location.href = "/#/login";
+      }, 3000);
+      return
+    }
     if(!updateWallet()){
       options?.onMessage("积分不足请购买积分或会员卡密！", true);
       return
