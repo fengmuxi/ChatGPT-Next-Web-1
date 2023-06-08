@@ -6,6 +6,22 @@
      -moz-appearance: none;
           appearance: none;
   cursor: pointer;
+  width: 163px;
+  background-color: var(--white);
+  color: var(--black);
+  text-align: left;
+}
+
+.password{
+  border: var(--border-in-light);
+  padding: 10px;
+  border-radius: 10px;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  cursor: pointer;
+  width: 185px;
+  max-width: 60% !important;
   background-color: var(--white);
   color: var(--black);
   text-align: left;

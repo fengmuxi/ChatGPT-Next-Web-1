@@ -72,7 +72,7 @@ export function Login() {
           <div>
             <input
               type="password"
-              className={styles.name}
+              className={styles.password}
               placeholder={Locale.User.Password}
               onInput={(e) => onPassword(e.currentTarget.value)}
               value={password}
