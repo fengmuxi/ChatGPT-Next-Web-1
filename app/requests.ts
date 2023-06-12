@@ -218,7 +218,7 @@ export async function requestChatStream(
   }
   let vip=await isVip()
   const Bot = useAppConfig.getState().bot;
-  if(!vip.flag){
+  if(!vip.flag||vip.msg=="非会员"){
     if(vip.msg=="未登录！"){
       showToast("未登录！")
       options?.onError(new Error("Unauthorized"), 401);
