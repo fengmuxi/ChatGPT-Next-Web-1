@@ -411,7 +411,7 @@ export const useChatStore = create<ChatStore>()(
           countMessages(cleanMessages) >= SUMMARIZE_MIN_LEN
         ) {
           const Bot = useAppConfig.getState().bot;
-          if (Bot != "OpenAI") {
+          if (Bot != "OpenAI (VIP)") {
             get().updateCurrentSession(
               (session) => (session.topic = trimTopic(Bot)),
             );
