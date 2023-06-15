@@ -201,6 +201,21 @@ async function isVip() {
   return response
 }
 
+function chatMessage(message:string,messageType:string,messageSource:string) {
+  let body={
+    messageType:messageType,
+    messageText:message,
+    messageSource:messageSource
+  }
+  fetch("/api/user/chatmessage",{
+    method:"POST",
+    headers:{
+      "Content-Type": "application/json",
+      ...getHeaders()
+    },
+    body:JSON.stringify(body)
+  })
+}
 
 export async function requestChatStream(
   messages: Message[],
@@ -233,7 +248,8 @@ export async function requestChatStream(
     }
     if (Bot == "Lemur"){
       const req = makeRevChatRequestParam(messages);
-  
+
+      chatMessage(req.messages,"文字","user")
       console.log("[Request] ", req);
   
       const controller = new AbortController();
@@ -256,6 +272,7 @@ export async function requestChatStream(
         const finish = () => {
           options?.onMessage(responseText, true);
           controller.abort();
+          chatMessage(responseText,"文字","system")
         };
   
         if (res.ok) {
@@ -302,6 +319,7 @@ export async function requestChatStream(
       overrideModel: options?.overrideModel,
     });
 
+    chatMessage(JSON.stringify(req.messages),"文字","user")
     console.log("[Request] ", req);
 
     const controller = new AbortController();
@@ -326,6 +344,7 @@ export async function requestChatStream(
       const finish = () => {
         options?.onMessage(responseText, true);
         controller.abort();
+        chatMessage(responseText,"文字","system")
       };
 
       if (res.ok) {
@@ -368,6 +387,7 @@ export async function requestChatStream(
   } else if (Bot == "OpenAI绘画 (VIP)") {
     console.log("[Request] ", messages[messages.length - 1].content);
     const req = makeImageRequestParam(messages);
+    chatMessage(req.prompt,"文字","user")
     const controller = new AbortController();
     const reqTimeoutId = setTimeout(() => controller.abort(), TIME_OUT_MS);
     try {
@@ -391,6 +411,7 @@ export async function requestChatStream(
         true,
       );
       controller.abort();
+      chatMessage(JSON.stringify(response.data[0].url).replace(reg, "$1"),"文字","system")
       }else if(res.status === 401){
         console.error("Unauthorized");
         options?.onError(new Error("Unauthorized"), res.status);
@@ -401,6 +422,7 @@ export async function requestChatStream(
     }
   } else if (Bot == "必应 (VIP)") {
     console.log("[Request] ", messages[messages.length - 1].content);
+    chatMessage(messages[messages.length - 1].content,"文字","user")
     const controller = new AbortController();
     const reqTimeoutId = setTimeout(() => controller.abort(), TIME_OUT_MS);
     try {
@@ -426,6 +448,7 @@ export async function requestChatStream(
       // }
       options?.onMessage(message, true);
       controller.abort();
+      chatMessage(message,"文字","system")
       }else if(res.status === 401){
         console.error("Unauthorized");
         options?.onError(new Error("Unauthorized"), res.status);
@@ -436,6 +459,7 @@ export async function requestChatStream(
     }
   } else if (Bot == "万卷 (VIP)") {
     console.log("[Request] ", messages[messages.length - 1].content);
+    chatMessage(messages[messages.length - 1].content,"文字","user")
     const controller = new AbortController();
     const reqTimeoutId = setTimeout(() => controller.abort(), TIME_OUT_MS);
     try {
@@ -450,8 +474,10 @@ export async function requestChatStream(
 
       clearTimeout(reqTimeoutId);
       if(res.ok){
-        options?.onMessage(await res.text(), true);
+        let message=await res.text()
+        options?.onMessage(message, true);
       controller.abort();
+      chatMessage(message,"文字","system")
       }else if(res.status === 401){
         console.error("Unauthorized");
         options?.onError(new Error("Unauthorized"), res.status);
@@ -463,6 +489,7 @@ export async function requestChatStream(
   } else if (Bot == "必应绘画") {
     console.log("[Request] ", messages[messages.length - 1].content);
     const req = makeImageRequestParam(messages);
+    chatMessage(messages[messages.length - 1].content,"文字","user")
     const controller = new AbortController();
     const reqTimeoutId = setTimeout(() => controller.abort(), TIME_OUT_MS);
     try {
@@ -483,6 +510,7 @@ export async function requestChatStream(
         true,
       );
       controller.abort();
+      chatMessage(JSON.stringify(response.data[0].url).replace(reg, "$1"),"图片","system")
     } catch (err) {
       console.error("NetWork Error", err);
       options?.onMessage("请换一个问题试试吧", true);
@@ -491,6 +519,7 @@ export async function requestChatStream(
     const req = makeRevChatRequestParam(messages);
 
     console.log("[Request] ", req);
+    chatMessage(req.messages,"文字","user")
 
     const controller = new AbortController();
     const reqTimeoutId = setTimeout(() => controller.abort(), TIME_OUT_MS);
@@ -512,6 +541,7 @@ export async function requestChatStream(
       const finish = () => {
         options?.onMessage(responseText, true);
         controller.abort();
+        chatMessage(responseText,"文字","system")
       };
 
       if (res.ok) {

@@ -1,4 +1,5 @@
 import { NextRequest } from "next/server";
+import { getIP } from "./auth";
 
 const OPENAI_URL = "api.openai.com";
 const DEFAULT_PROTOCOL = "https";

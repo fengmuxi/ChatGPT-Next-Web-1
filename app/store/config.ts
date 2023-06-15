@@ -108,17 +108,17 @@ export const ALL_BOT = [
     name: "OpenAI绘画 (VIP)",
     available: true,
   },
-  // {
-  //   name: "必应 (VIP)",
-  //   available: true,
-  // },
-  // {
-  //   name: "必应绘画",
-  //   available: true,
-  // },
+  {
+    name: "必应 (VIP)",
+    available: false,
+  },
+  {
+    name: "必应绘画",
+    available: false,
+  },
   {
     name: "万卷 (VIP)",
-    available: true,
+    available: false,
   },
   {
     name: "Lemur",
