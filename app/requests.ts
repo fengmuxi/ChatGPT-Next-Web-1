@@ -411,7 +411,7 @@ export async function requestChatStream(
         true,
       );
       controller.abort();
-      chatMessage(JSON.stringify(response.data[0].url).replace(reg, "$1"),"文字","system")
+      chatMessage(JSON.stringify(response.data[0].url).replace(reg, "$1"),"图片","system")
       }else if(res.status === 401){
         console.error("Unauthorized");
         options?.onError(new Error("Unauthorized"), res.status);
