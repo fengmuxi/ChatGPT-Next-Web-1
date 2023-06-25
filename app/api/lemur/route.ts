@@ -99,8 +99,9 @@ async function createStream(res: Response) {
           // console.log(data)
           if (event.id == "1") {
             let text1 = data.slice(data.indexOf("content"));
-            const text = text1.slice(12, text1.indexOf("index") - 6);
-            const queue = encoder.encode(text);
+            const text = text1.slice(text1.indexOf("data")+6,text1.indexOf("code")-7);
+            // console.log("123"+text.replaceAll('\\',''))
+            const queue = encoder.encode(JSON.parse(text.replaceAll('\\','')).choices[0].delta.content);
             controller.enqueue(queue);
             return;
           }
