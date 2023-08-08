@@ -218,7 +218,7 @@ export function User() {
 
           <List>
           <ListItem title={Locale.User.kami}>
-            <div>
+            <div className={styles.kamidiv}>
               <input
                   type="input"
                   className={styles.kamicode}
