@@ -121,6 +121,7 @@ export function User() {
   function getVipTime(){
     let time = String(new Date());
     if(useStor.vip_time!=null || useStor.vip_time!=''){
+      console.log(useStor.vip_time)
       time=useStor.vip_time
     }
     const date = new Date(time)

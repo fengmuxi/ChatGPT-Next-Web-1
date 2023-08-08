@@ -575,7 +575,7 @@ export async function requestChatStream(
       }
     } catch (err) {
       console.error("NetWork Error", err);
-      options?.onError(err as Error);
+      options?.onMessage("请换一个问题试试吧", true);
     }
   }
 }
