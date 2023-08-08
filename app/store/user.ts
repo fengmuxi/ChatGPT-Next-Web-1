@@ -99,7 +99,7 @@ export const DEFAULT_USER = {
   password: "",
   name: "",
   wallet: 0,
-  vip_time: new Date(),
+  vip_time: "2000-01-01",
   mail: "",
   sig_state: "",
   head: "",
