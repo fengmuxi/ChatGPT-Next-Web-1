@@ -267,6 +267,15 @@ export function User() {
           </List>
 
           <List>
+          <ListItem title="QQ频道">
+                <IconButton
+                className={styles.qqButton}
+                text="加入"
+                onClick={()=>{
+                  window.location.href="https://pd.qq.com/s/e1veynn5h"
+                }}
+              />
+          </ListItem>
             <ListItem title={Locale.User.Ststus}>
                 <IconButton
                 className={styles.logoutButton}
