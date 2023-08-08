@@ -136,7 +136,7 @@ export function User() {
       useStor.getUserInfo()
     }
     setUserName(useStor.name)
-  },[useStor.name,accessStore.auth])
+  },[useStor,accessStore])
 
   useEffect(() => {
     const keydownEvent = (e: KeyboardEvent) => {

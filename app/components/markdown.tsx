@@ -26,7 +26,7 @@ export function Mermaid(props: { code: string; onError: () => void }) {
           console.error("[Mermaid] ", e.message);
         });
     }
-  }, [props.code]);
+  }, [props]);
 
   function viewSvgInNewWindow() {
     const svg = ref.current?.querySelector("svg");

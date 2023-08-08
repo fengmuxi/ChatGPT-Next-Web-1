@@ -4,7 +4,7 @@ import ChatIcon from "../icons/chatgpt.svg";
 import styles from "./login.module.scss";
 import { IconButton } from "./button";
 import { useUserStore } from "../store";
-import { useEffect, useState } from "react";
+import { Component, useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import { encrypt } from "../rsaEncrypt";
 
@@ -34,14 +34,13 @@ export function Login() {
     }, 4000);
     getCode();
   };
-
   async function getCode() {
     let img = await userStore.getCode();
     setImg(img);
   }
 
   useEffect(() => {
-    getCode();
+    getCode()
   }, []);
 
   return (
