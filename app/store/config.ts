@@ -104,7 +104,7 @@ export const ALL_MODELS = [
 export const ALL_BOT = [
   {
     name: "OpenAI (VIP)",
-    available: false,
+    available: true,
   },
   {
     name: "OpenAI绘画 (VIP)",
@@ -124,14 +124,6 @@ export const ALL_BOT = [
   },
   {
     name: "Lemur",
-    available: true,
-  },
-  {
-    name: "通义千问(VIP)",
-    available: true,
-  },
-  {
-    name: "百度文心千帆(VIP)",
     available: true,
   },
 ];
