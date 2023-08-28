@@ -50,40 +50,42 @@ export type ChatConfigStore = ChatConfig & {
 
 export type ModelConfig = ChatConfig["modelConfig"];
 
-const ENABLE_GPT4 = true;
-
 export const ALL_MODELS = [
   {
     name: "gpt-4",
-    available: ENABLE_GPT4,
+    available: false,
   },
   {
     name: "gpt-4-0314",
-    available: ENABLE_GPT4,
+    available: false,
   },
   {
     name: "gpt-4-32k",
-    available: ENABLE_GPT4,
+    available: false,
   },
   {
     name: "gpt-4-32k-0314",
-    available: ENABLE_GPT4,
+    available: false,
   },
   {
     name: "gpt-3.5-turbo",
-    available: true,
+    available: false,
   },
   {
     name: "gpt-3.5-turbo-0301",
-    available: true,
+    available: false,
   },
   {
     name: "qwen-v1", // 通义千问
-    available: false,
+    available: true,
   },
   {
-    name: "ernie", // 文心一言
-    available: false,
+    name: "qwen-plus-v1", // 通义千问
+    available: true,
+  },
+  {
+    name: "ERNIE-Bot-turbo", // 文心一言
+    available: true,
   },
   {
     name: "spark", // 讯飞星火
@@ -102,18 +104,18 @@ export const ALL_MODELS = [
 export const ALL_BOT = [
   {
     name: "OpenAI (VIP)",
-    available: true,
+    available: false,
   },
   {
     name: "OpenAI绘画 (VIP)",
-    available: true,
+    available: false,
   },
   {
     name: "必应 (VIP)",
     available: false,
   },
   {
-    name: "必应绘画",
+    name: "必应绘画(VIP)",
     available: false,
   },
   {
@@ -122,6 +124,14 @@ export const ALL_BOT = [
   },
   {
     name: "Lemur",
+    available: true,
+  },
+  {
+    name: "通义千问(VIP)",
+    available: true,
+  },
+  {
+    name: "百度文心千帆(VIP)",
     available: true,
   },
 ];

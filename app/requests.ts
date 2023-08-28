@@ -242,10 +242,6 @@ export async function requestChatStream(
       }, 3000);
       return
     }
-    if(!updateWallet()){
-      options?.onMessage("积分不足请购买积分或会员卡密！", true);
-      return
-    }
     if (Bot == "Lemur"){
       const req = makeRevChatRequestParam(messages);
 
@@ -312,6 +308,10 @@ export async function requestChatStream(
       options?.onMessage("该模型需要开通会员才能使用！", true);
       return
     }
+  }
+  if(!updateWallet()){
+    options?.onMessage("积分不足请购买积分或会员卡密！", true);
+    return
   }
   if (Bot == "OpenAI (VIP)") {
     const req = makeRequestParam(messages, {
@@ -486,7 +486,7 @@ export async function requestChatStream(
       console.error("NetWork Error", err);
       options?.onMessage("请换一个问题试试吧", true);
     }
-  } else if (Bot == "必应绘画") {
+  } else if (Bot == "必应绘画(VIP)") {
     console.log("[Request] ", messages[messages.length - 1].content);
     const req = makeImageRequestParam(messages);
     chatMessage(messages[messages.length - 1].content,"文字","user")
@@ -516,16 +516,20 @@ export async function requestChatStream(
       options?.onMessage("请换一个问题试试吧", true);
     }
   }else{
-    const req = makeRevChatRequestParam(messages);
+    const req = makeRequestParam(messages, {
+      stream: true,
+      overrideModel: options?.overrideModel,
+    });
 
+    chatMessage(JSON.stringify(req.messages),"文字","user")
     console.log("[Request] ", req);
-    chatMessage(req.messages,"文字","user")
 
     const controller = new AbortController();
     const reqTimeoutId = setTimeout(() => controller.abort(), TIME_OUT_MS);
 
     try {
-      const res = await fetch("/api/lemur", {
+      const openaiUrl = useAccessStore.getState().openaiUrl;
+      const res = await fetch(openaiUrl + "v1/chat/completions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -534,6 +538,7 @@ export async function requestChatStream(
         body: JSON.stringify(req),
         signal: controller.signal,
       });
+
       clearTimeout(reqTimeoutId);
 
       let responseText = "";
@@ -551,14 +556,18 @@ export async function requestChatStream(
         options?.onController?.(controller);
 
         while (true) {
-          // handle time out, will stop if no response in 10 secs
           const resTimeoutId = setTimeout(() => finish(), TIME_OUT_MS);
           const content = await reader?.read();
           clearTimeout(resTimeoutId);
-          const text = decoder.decode(content?.value);
+
+          if (!content || !content.value) {
+            break;
+          }
+
+          const text = decoder.decode(content.value, { stream: true });
           responseText += text;
 
-          const done = !content || content.done;
+          const done = content.done;
           options?.onMessage(responseText, false);
 
           if (done) {
@@ -575,7 +584,7 @@ export async function requestChatStream(
       }
     } catch (err) {
       console.error("NetWork Error", err);
-      options?.onMessage("请换一个问题试试吧", true);
+      options?.onError(err as Error);
     }
   }
 }
