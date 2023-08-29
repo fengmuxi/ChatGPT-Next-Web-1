@@ -411,20 +411,20 @@ export const useChatStore = create<ChatStore>()(
           countMessages(cleanMessages) >= SUMMARIZE_MIN_LEN
         ) {
           const Bot = useAppConfig.getState().bot;
-          if (Bot != "OpenAI (VIP)") {
+          // if (Bot != "OpenAI (VIP)") {
             get().updateCurrentSession(
               (session) => (session.topic = trimTopic(Bot)),
             );
-          } else {
-            requestWithPrompt(cleanMessages, Locale.Store.Prompt.Topic, {
-              model: "gpt-3.5-turbo",
-            }).then((res) => {
-              get().updateCurrentSession(
-                (session) =>
-                  (session.topic = res ? trimTopic(res) : DEFAULT_TOPIC),
-              );
-            });
-          }
+          // } else {
+          //   requestWithPrompt(cleanMessages, Locale.Store.Prompt.Topic, {
+          //     model: "gpt-3.5-turbo",
+          //   }).then((res) => {
+          //     get().updateCurrentSession(
+          //       (session) =>
+          //         (session.topic = res ? trimTopic(res) : DEFAULT_TOPIC),
+          //     );
+          //   });
+          // }
         }
 
         const modelConfig = session.mask.modelConfig;
